@@ -1,7 +1,7 @@
 # Master Implementation Roadmap
 ## AI Alignment Game Theory Simulation - Project Hub
 
-**Date:** November 26, 2025 (End-of-Session Gardening - Architect, Worker Session 5)
+**Date:** November 15, 2025 (Updated: End of Session - Technology Investment UI Fix)
 **Purpose:** Central hub linking to all specialized roadmaps
 **Philosophy:** Research-backed realism, mechanism-driven emergence
 
@@ -676,15 +676,19 @@
 
 **Recent Completions (Nov 15, 2025):**
 
-- ✅ **CRITICAL BUG FIX: Outcome Probabilities Normalization** (Nov 15, 2025)
-  - **Problem:** Outcome probabilities did not sum to 1.0 (total 0.939 - probability constraint violation)
-  - **Root Cause:** Pre-existing bug in `src/simulation/outcomes.ts` - no normalization step
-  - **Impact:** Blocked all Monte Carlo simulations with invalid probability distributions
-  - **Fix:** Added normalization to ensure probabilities sum to exactly 1.0
-  - **Files Modified:** `src/simulation/outcomes.ts` (normalization), `src/simulation/initialization.ts` (regionalAdaptation field)
-  - **Validation:** N=1 Monte Carlo, 12 months - completes successfully, probabilities valid
-  - **Commits:** 6dc7f398b
-  - **Status:** ✅ COMPLETE - Monte Carlo validation unblocked
+- ✅ **TECHNOLOGY INVESTMENT UI FIX** (Nov 15, 2025 - Commit 8400e206)
+ - **Scope:** Wired up technology investment slider to GameStore
+ - **Implementation:** Added `updateTechnologyInvestment` method to GameStore, connected TechnologyTab slider
+ - **Impact:** Technology investment slider now functional (was TODO)
+ - **Type:** Minor tactical fix (no archival needed)
+
+- 🟡 **ARCHITECTURE INTEGRATION REVIEW - GRADE B-** (Nov 15, 2025)
+ - **Scope:** Comprehensive architecture audit post-phase consolidation
+ - **Grade:** B- (Mostly Stable with Significant Performance Concerns)
+ - **Issues Identified:** 2 CRITICAL, 5 HIGH, 5 MEDIUM priority concerns
+ - **Report:** `reviews/architecture_integration_review_20251115.md` (269 lines)
+ - **Archive:** `plans/completed/architecture_integration_review_20251115.md`
+ - **Impact on Architecture Health:** 9.5/10 → 8.0/10 (issues outweigh recent progress)
 
 - ✅ **DEFENSIVE FALLBACK MIGRATION - ANALYZED (REVERT RECOMMENDED)** (Nov 15-17, 2025)
   - **Context:** Architecture review identified 169 defensive fallback violations (`??` and `||`)
