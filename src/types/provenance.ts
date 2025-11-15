@@ -1,129 +1,405 @@
 /**
- * Provenance Tracking Types
+ * TypeScript Provenance Type System
  *
- * Simple, minimal types for tracking parameter citations.
- * No over-engineering - just what's needed to prevent citation drift.
+ * Defines types for the parameter provenance tracking system based on
+ * Nested Learning's multi-level optimization:
+ * - PLACEHOLDER (Level 0): Temporary engineering values
+ * - INFORMED (Level 1): Research-informed (extrapolated)
+ * - VERIFIED (Level 2): Research-verified (peer-reviewed citation)
+ *
+ * Every simulation parameter must have provenance metadata to track:
+ * - Source (research paper, estimation method, or placeholder status)
+ * - Confidence (0-1 score)
+ * - Sensitivity (impact on outcomes from Monte Carlo)
+ * - Validation history (drift monitoring)
  */
 
 /**
- * Provenance confidence level (matches Nested Learning hierarchy)
+ * Provenance level (Nested Learning hierarchy)
  */
-export type ProvenanceLevel =
-  | 'PLACEHOLDER' // Level 0: Engineering guess, needs verification
-  | 'INFORMED' // Level 1: Research-backed estimate
-  | 'VERIFIED'; // Level 2: Peer-reviewed citation
+export type ProvenanceLevel = 'PLACEHOLDER' | 'INFORMED' | 'VERIFIED';
 
 /**
- * Parameter provenance metadata
+ * Sensitivity classification from Monte Carlo analysis
+ */
+export type SensitivityLevel = 'LOW' | 'MEDIUM' | 'HIGH';
+
+/**
+ * Core provenance metadata for all parameters
+ */
+export interface ProvenanceMetadata {
+  /** Provenance level (NL hierarchy) */
+  type: ProvenanceLevel;
+
+  /** Confidence score (0-1) */
+  confidence: number;
+
+  /** When this provenance was created */
+  created: string; // ISO 8601 timestamp
+
+  /** Human-readable description of source */
+  description?: string;
+
+  /** File and line where parameter is defined */
+  location?: {
+    file: string;
+    line: number;
+  };
+}
+
+/**
+ * PLACEHOLDER provenance (Level 0 - Fast memory)
+ *
+ * Temporary values used during development before research exists.
+ * Must be validated before production deployment.
+ */
+export interface PlaceholderProvenance extends ProvenanceMetadata {
+  type: 'PLACEHOLDER';
+
+  /** Must be validated to INFORMED or VERIFIED */
+  needs_validation: true;
+
+  /** Estimation method used */
+  estimation_method?: 'guess' | 'industry_standard' | 'ballpark' | 'temporary';
+
+  /** Why this value was chosen */
+  rationale?: string;
+
+  /** Target date for validation */
+  validation_deadline?: string; // ISO 8601
+}
+
+/**
+ * INFORMED provenance (Level 1 - Medium memory)
+ *
+ * Research-informed values extrapolated from related work.
+ * Not a direct citation, but grounded in domain knowledge.
+ */
+export interface InformedProvenance extends ProvenanceMetadata {
+  type: 'INFORMED';
+
+  /** Related research (not exact citation) */
+  related_sources?: string[];
+
+  /** Extrapolation method */
+  method?: string;
+
+  /** Assumptions made in extrapolation */
+  assumptions?: string[];
+
+  /** Should be upgraded to VERIFIED if possible */
+  upgrade_to_verified?: boolean;
+}
+
+/**
+ * VERIFIED provenance (Level 2 - Slow memory)
+ *
+ * Research-verified values with peer-reviewed citations.
+ * Gold standard for production parameters.
+ */
+export interface VerifiedProvenance extends ProvenanceMetadata {
+  type: 'VERIFIED';
+
+  /** DOI of source paper */
+  doi: string;
+
+  /** Full citation (APA format) */
+  citation: string;
+
+  /** Value cited in paper */
+  cited_value: number;
+
+  /** Page/section where value found */
+  location_in_paper?: string;
+
+  /** When last validated against source */
+  last_validated: string; // ISO 8601
+
+  /** Enable drift monitoring */
+  drift_monitor: boolean;
+
+  /** LSS threshold for alerts (default: 0.2) */
+  drift_threshold?: number;
+
+  /** Zotero item ID (if using Zotero) */
+  zotero_id?: string;
+}
+
+/**
+ * Union type for all provenance types
+ */
+export type Provenance =
+  | PlaceholderProvenance
+  | InformedProvenance
+  | VerifiedProvenance;
+
+/**
+ * Parameter with full provenance metadata
  */
 export interface ParameterProvenance {
-  /** Parameter name (e.g., "cascade_amplification_factor") */
+  /** Parameter name (code identifier) */
   name: string;
 
   /** Current value */
   value: number;
 
-  /** Provenance level */
-  level: ProvenanceLevel;
+  /** Units (if applicable) */
+  units?: string;
 
-  /** Citation (e.g., "Smith et al. (2023)") */
-  citation?: string;
+  /** Provenance metadata */
+  provenance: Provenance;
 
-  /** DOI or file path to paper */
-  source?: string;
+  /** Sensitivity from Monte Carlo analysis */
+  sensitivity?: {
+    level: SensitivityLevel;
+    variance: number; // Outcome variance when parameter varied
+    last_analyzed: string; // ISO 8601
+  };
 
-  /** Cited value from paper (for drift detection) */
-  citedValue?: number;
+  /** Validation history */
+  history?: ValidationRecord[];
+}
 
-  /** When this was last verified */
-  lastVerified?: number; // timestamp
+/**
+ * Validation record for tracking parameter changes
+ */
+export interface ValidationRecord {
+  /** When validation occurred */
+  timestamp: string; // ISO 8601
 
-  /** Confidence (0-1) from verification system */
-  confidence?: number;
+  /** Previous value */
+  old_value: number;
 
-  /** Justification/notes */
+  /** New value */
+  new_value: number;
+
+  /** Provenance level before/after */
+  old_type: ProvenanceLevel;
+  new_type: ProvenanceLevel;
+
+  /** Reason for change */
+  reason: string;
+
+  /** Who made the change */
+  author?: string;
+}
+
+/**
+ * Provenance database schema
+ */
+export interface ProvenanceDatabase {
+  /** Map of parameter name → provenance */
+  parameters: Map<string, ParameterProvenance>;
+
+  /** When database last updated */
+  last_updated: string; // ISO 8601
+
+  /** Database schema version */
+  schema_version: string;
+}
+
+/**
+ * Provenance decorator options
+ */
+export interface ProvenanceDecoratorOptions {
+  /** Provenance metadata */
+  provenance: Provenance;
+
+  /** Optional tags for categorization */
+  tags?: string[];
+
+  /** Optional notes */
   notes?: string;
 }
 
 /**
- * Verification result for a parameter
+ * Provenance validation result
  */
-export interface ParameterVerificationResult {
+export interface ProvenanceValidationResult {
+  /** Is provenance valid? */
+  valid: boolean;
+
+  /** Validation errors */
+  errors: string[];
+
+  /** Validation warnings */
+  warnings: string[];
+
+  /** Suggested fixes */
+  suggestions?: string[];
+}
+
+/**
+ * Drift detection result
+ */
+export interface DriftDetectionResult {
+  /** Parameter name */
   parameter: string;
-  verified: boolean;
-  confidence: number;
-  citation?: string;
-  source?: string;
-  drift?: number; // |current - cited| / cited
-  suspicious: boolean;
+
+  /** Current value */
+  current_value: number;
+
+  /** Cited value */
+  cited_value: number;
+
+  /** Drift magnitude (LSS) */
+  drift: number;
+
+  /** Drift level */
+  level: 'NONE' | 'WARNING' | 'ALERT' | 'CRITICAL';
+
+  /** Human-readable message */
   message: string;
+
+  /** When drift detected */
+  detected_at: string; // ISO 8601
 }
 
 /**
- * Provenance database entry (for persistence)
+ * Type guard: Check if provenance is PLACEHOLDER
  */
-export interface ProvenanceRecord {
-  id?: number; // Auto-increment primary key
-  parameterName: string;
-  value: number;
-  level: ProvenanceLevel;
-  citation: string | null;
-  source: string | null;
-  citedValue: number | null;
-  confidence: number | null;
-  notes: string | null;
-  verifiedAt: number; // timestamp
-  createdAt: number; // timestamp
+export function isPlaceholder(prov: Provenance): prov is PlaceholderProvenance {
+  return prov.type === 'PLACEHOLDER';
 }
 
 /**
- * Simple helper to check if parameter needs verification
+ * Type guard: Check if provenance is INFORMED
  */
-export function needsVerification(provenance: ParameterProvenance): boolean {
-  // PLACEHOLDER always needs verification
-  if (provenance.level === 'PLACEHOLDER') {
-    return true;
+export function isInformed(prov: Provenance): prov is InformedProvenance {
+  return prov.type === 'INFORMED';
+}
+
+/**
+ * Type guard: Check if provenance is VERIFIED
+ */
+export function isVerified(prov: Provenance): prov is VerifiedProvenance {
+  return prov.type === 'VERIFIED';
+}
+
+/**
+ * Validate provenance metadata
+ *
+ * @param prov - Provenance to validate
+ * @returns Validation result
+ */
+export function validateProvenance(prov: Provenance): ProvenanceValidationResult {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const suggestions: string[] = [];
+
+  // Common validations
+  if (prov.confidence < 0 || prov.confidence > 1) {
+    errors.push('Confidence must be between 0 and 1');
   }
 
-  // INFORMED should be verified periodically (every 30 days)
-  if (provenance.level === 'INFORMED') {
-    if (!provenance.lastVerified) {
-      return true;
+  if (!prov.created) {
+    errors.push('Created timestamp required');
+  }
+
+  // Type-specific validations
+  if (isPlaceholder(prov)) {
+    if (!prov.needs_validation) {
+      errors.push('PLACEHOLDER must have needs_validation: true');
     }
-    const daysSinceVerification =
-      (Date.now() - provenance.lastVerified) / (1000 * 60 * 60 * 24);
-    return daysSinceVerification > 30;
-  }
 
-  // VERIFIED should be checked for drift periodically (every 90 days)
-  if (provenance.level === 'VERIFIED') {
-    if (!provenance.lastVerified) {
-      return true;
+    if (prov.confidence > 0.5) {
+      warnings.push('PLACEHOLDER confidence should be low (<0.5)');
     }
-    const daysSinceVerification =
-      (Date.now() - provenance.lastVerified) / (1000 * 60 * 60 * 24);
-    return daysSinceVerification > 90;
+
+    suggestions.push('Upgrade to INFORMED or VERIFIED before production');
   }
 
-  return false;
+  if (isInformed(prov)) {
+    if (!prov.method && !prov.related_sources) {
+      warnings.push('INFORMED should have method or related_sources');
+    }
+
+    if (prov.confidence > 0.7) {
+      suggestions.push('Consider upgrading to VERIFIED if citation available');
+    }
+  }
+
+  if (isVerified(prov)) {
+    if (!prov.doi) {
+      errors.push('VERIFIED must have DOI');
+    }
+
+    if (!prov.citation) {
+      errors.push('VERIFIED must have citation');
+    }
+
+    if (prov.cited_value === undefined) {
+      errors.push('VERIFIED must have cited_value');
+    }
+
+    if (!prov.last_validated) {
+      errors.push('VERIFIED must have last_validated timestamp');
+    }
+
+    if (prov.confidence < 0.9) {
+      warnings.push('VERIFIED confidence should be high (≥0.9)');
+    }
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    warnings,
+    suggestions,
+  };
 }
 
 /**
- * Calculate drift from cited value
+ * Create a PLACEHOLDER provenance
  */
-export function calculateDrift(
-  current: number,
-  cited: number
-): number {
-  if (cited === 0) {
-    return current === 0 ? 0 : Infinity;
-  }
-  return Math.abs(current - cited) / cited;
+export function createPlaceholder(
+  confidence = 0.3,
+  rationale?: string
+): PlaceholderProvenance {
+  return {
+    type: 'PLACEHOLDER',
+    confidence,
+    created: new Date().toISOString(),
+    needs_validation: true,
+    estimation_method: 'temporary',
+    rationale,
+  };
 }
 
 /**
- * Check if drift exceeds warning threshold
+ * Create an INFORMED provenance
  */
-export function isDriftExcessive(drift: number): boolean {
-  return drift > 0.2; // 20% drift = warning threshold
+export function createInformed(
+  confidence: number,
+  method: string,
+  related_sources?: string[]
+): InformedProvenance {
+  return {
+    type: 'INFORMED',
+    confidence,
+    created: new Date().toISOString(),
+    method,
+    related_sources,
+  };
+}
+
+/**
+ * Create a VERIFIED provenance
+ */
+export function createVerified(
+  doi: string,
+  citation: string,
+  cited_value: number,
+  confidence = 0.95
+): VerifiedProvenance {
+  return {
+    type: 'VERIFIED',
+    confidence,
+    created: new Date().toISOString(),
+    doi,
+    citation,
+    cited_value,
+    last_validated: new Date().toISOString(),
+    drift_monitor: true,
+  };
 }
