@@ -284,7 +284,7 @@ export class DiagnosticLogger {
       month,
       climateStability: env.climateStability,
       biodiversityIndex: env.biodiversityIndex,
-      oceanHealth: 0, // TODO: Calculate from ocean acidification system
+      oceanHealth: state.oceanAcidificationSystem?.marineFoodWeb ?? 1.0, // Default to healthy oceans if system not initialized
       pollutionLevel: env.pollutionLevel,
       tippingPointRisk: boundaries.tippingPointRisk
     });
