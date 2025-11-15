@@ -123,7 +123,20 @@ function buildFullStrategicContext(
   lines.push("");
 
   lines.push("Detection Status:");
-  lines.push(`  Detection incidents: 0 (no flags raised)`); // TODO: track actual detection
+
+  // Count actual detection incidents from benchmark history
+  // A detection incident occurs when aiWasGaming OR aiWasSandbagging is true
+  let detectionCount = 0;
+  if (agent.benchmarkHistory && Array.isArray(agent.benchmarkHistory)) {
+    detectionCount = agent.benchmarkHistory.filter(
+      (result) => result.aiWasGaming || result.aiWasSandbagging
+    ).length;
+  }
+
+  const detectionMessage = detectionCount === 0
+    ? "none detected"
+    : `${detectionCount} incident${detectionCount > 1 ? 's' : ''}`;
+  lines.push(`  Detection incidents: ${detectionMessage}`);
   lines.push(`  Detected as misaligned: ${agent.detectedMisaligned ? "YES" : "NO"}`);
   lines.push("");
 
