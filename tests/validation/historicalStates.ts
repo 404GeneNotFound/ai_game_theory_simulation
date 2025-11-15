@@ -434,7 +434,28 @@ export function extractValidationMetrics(
     organizationalSurvivalRate: finalState.organizations.length / initialState.organizations.length,
     socialStabilityChange: finalState.globalMetrics.socialStability - initialState.globalMetrics.socialStability,
     trustChange: finalState.globalMetrics.publicTrust - initialState.globalMetrics.publicTrust,
-    techSectorGrowth: 0, // TODO: Calculate from organization financials
+    techSectorGrowth: (() => {
+      // Defensive: Filter private organizations (tech sector proxy)
+      const initialPrivateOrgs = initialState.organizations.filter(o => o.type === 'private');
+      const finalPrivateOrgs = finalState.organizations.filter(o => o.type === 'private');
+
+      // Defensive: Handle no private organizations in initial state
+      if (initialPrivateOrgs.length === 0) {
+        return 0;
+      }
+
+      // Sum capital across private organizations
+      const initialCapital = initialPrivateOrgs.reduce((sum, org) => sum + org.capital, 0);
+      const finalCapital = finalPrivateOrgs.reduce((sum, org) => sum + org.capital, 0);
+
+      // Defensive: Handle zero initial capital (division by zero)
+      if (initialCapital === 0) {
+        return 0;
+      }
+
+      // Calculate percentage growth
+      return ((finalCapital - initialCapital) / initialCapital) * 100;
+    })(),
     aiCapabilityGrowth: (() => {
       // Defensive: Handle empty arrays
       if (initialState.aiAgents.length === 0 || finalState.aiAgents.length === 0) {
