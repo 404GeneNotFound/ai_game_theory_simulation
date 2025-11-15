@@ -77,6 +77,8 @@ export function getCountryGovernmentDetails(
     legitimacy: (gov as any)?.legitimacy || 0,
     enforcementCapacity: (gov as any)?.enforcementCapacity || 0,
     inCoalition: govSystem.coalitions?.has(countryCode) || false,
-    activePolicies: [], // TODO: Filter active policies by country
+    activePolicies: (govSystem.activePolicies || [])
+      .filter(policy => policy?.country === countryCode)
+      .map(policy => policy?.domain || 'unknown'),
   }));
 }
