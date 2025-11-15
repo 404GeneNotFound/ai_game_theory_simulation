@@ -435,6 +435,20 @@ export function extractValidationMetrics(
     socialStabilityChange: finalState.globalMetrics.socialStability - initialState.globalMetrics.socialStability,
     trustChange: finalState.globalMetrics.publicTrust - initialState.globalMetrics.publicTrust,
     techSectorGrowth: 0, // TODO: Calculate from organization financials
-    aiCapabilityGrowth: 0 // TODO: Calculate from AI capability history
+    aiCapabilityGrowth: (() => {
+      // Defensive: Handle empty arrays
+      if (initialState.aiAgents.length === 0 || finalState.aiAgents.length === 0) {
+        return 0;
+      }
+
+      // Find max capability in initial state
+      const initialMaxCap = Math.max(...initialState.aiAgents.map(a => a.capability));
+
+      // Find max capability in final state
+      const finalMaxCap = Math.max(...finalState.aiAgents.map(a => a.capability));
+
+      // Calculate growth (can be negative if capabilities decreased)
+      return finalMaxCap - initialMaxCap;
+    })()
   };
 }
