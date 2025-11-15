@@ -32,9 +32,14 @@ export function getGovernmentSummary(state: GameState): GovernmentSummary {
     byGovernmentType[type] = (byGovernmentType[type] || 0) + 1;
   }
 
-  // Calculate averages (placeholder - actual implementation depends on government structure)
-  const averageLegitimacy = 0.5; // TODO: Extract from government data
-  const averageEnforcementCapacity = 0.5; // TODO: Extract from government data
+  // Calculate averages from government data
+  const averageLegitimacy = governments.length === 0
+    ? 0
+    : governments.reduce((sum, gov) => sum + ((gov as any)?.legitimacy || 0), 0) / governments.length;
+
+  const averageEnforcementCapacity = governments.length === 0
+    ? 0
+    : governments.reduce((sum, gov) => sum + ((gov as any)?.enforcementCapacity || 0), 0) / governments.length;
 
   return {
     totalCountries: governments.length,
