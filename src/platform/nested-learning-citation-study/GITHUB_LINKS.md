@@ -11,6 +11,9 @@
 **Platform Overview (Start Here)**
 https://github.com/404GeneNotFound/ai_game_theory_simulation/blob/feature/nested-learning-citation-platform/src/platform/nested-learning-citation-study/PLATFORM_OVERVIEW.md
 
+**MARCUS 3.0 Final Plan** ⭐
+https://github.com/404GeneNotFound/ai_game_theory_simulation/blob/feature/nested-learning-citation-platform/src/platform/nested-learning-citation-study/MARCUS_3.0_FINAL_PLAN.md
+
 **Platform README**
 https://github.com/404GeneNotFound/ai_game_theory_simulation/blob/feature/nested-learning-citation-platform/src/platform/nested-learning-citation-study/README.md
 

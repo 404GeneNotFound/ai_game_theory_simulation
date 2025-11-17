@@ -4,6 +4,8 @@
 
 This is a **separate platform** from the main simulation for studying citation behavior using Nested Learning multi-agent systems. This is based on the NeurIPS 2025 paper "Nested Learning: The Illusion of Deep Learning Architectures" by Behrouz et al. (2024).
 
+**This platform implements MARCUS 3.0** - Multi-Agent Recursive Citation Understanding System v3.0. See `MARCUS_3.0_FINAL_PLAN.md` for the complete system architecture and implementation plan.
+
 ## What This Platform Does
 
 This platform models **citation behavior as a multi-agent game** where:
@@ -114,9 +116,22 @@ This platform can:
 4. **Consider integration points** with main simulation
 5. **Build Marcus 2.0** using this framework
 
-## Building Marcus 2.0 (Platform-Engineer)
+## MARCUS 3.0 Architecture
 
-Based on the nested learning framework, Marcus 2.0 could:
+**See `MARCUS_3.0_FINAL_PLAN.md` for complete details.**
+
+MARCUS 3.0 (Multi-Agent Recursive Citation Understanding System v3.0) represents the complete implementation with:
+
+- **9 Citation Behaviors:** From proper citation to plagiarism with integrity scoring
+- **4-Level Memory Hierarchy:** Immediate → Short-term → Long-term → Persistent
+- **Self-Modifying Agents:** Adapt learning rules based on Local Surprise Signals
+- **Production Infrastructure:** Full API, PostgreSQL, Redis integration
+- **Comprehensive Benchmarking:** 50+ metrics, 7 datasets, 5 baselines
+- **Real-time Monitoring:** Prometheus metrics, automated reporting
+
+### Building Platform-Engineer Variants
+
+Based on the nested learning framework, platform-engineer variants could:
 - Model software engineering citation patterns (library attribution)
 - Study open-source contribution credit
 - Analyze documentation citation practices
@@ -192,10 +207,12 @@ See `nested_learning_results.json` for example output showing:
 ## Documentation
 
 ### Platform Documentation
+- **🌟 MARCUS 3.0 Plan:** `MARCUS_3.0_FINAL_PLAN.md` - Complete system architecture and plan
 - **Full Theory:** `docs/citations_and_integration.md` - Complete academic citations and theory
 - **Integration Guide:** `docs/integration_guide_continued.md` - Citation platform integration
 - **TypeScript Integration:** `integration/README.md` - Production integration with TypeScript platform
 - **Complete Agent Docs:** `integration/COMPLETE_AGENT_DOCUMENTATION.md` - Full system architecture
+- **Benchmark Docs:** `integration/EVALUATION_BENCHMARKS_COMPLETE.md` - Comprehensive evaluation guide
 - **Code Comparison:** `analysis/code_comparison_analysis.md` - Implementation details
 - **Branch Comparison:** `analysis/branch_comparison.md` - MVP vs Platform comparison
 

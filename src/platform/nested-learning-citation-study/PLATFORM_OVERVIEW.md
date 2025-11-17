@@ -4,6 +4,8 @@
 
 A **multi-agent simulation platform** for studying citation behavior using cutting-edge Nested Learning concepts from the 2024 NeurIPS paper by Behrouz et al.
 
+**This platform implements MARCUS 3.0** (Multi-Agent Recursive Citation Understanding System v3.0) - a complete Citation Integrity Platform powered by Nested Learning with multi-agent swarm intelligence and 4-level memory hierarchy. See `MARCUS_3.0_FINAL_PLAN.md` for full details.
+
 ## Files at a Glance
 
 ### Standalone Python Implementation
