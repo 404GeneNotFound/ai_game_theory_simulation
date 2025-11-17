@@ -2,85 +2,82 @@
   "history": [
     {
       "generation": 1,
-      "total_payoff": 35,
-      "cooperation_count": 3,
+      "total_payoff": 36,
+      "cooperation_count": 5,
       "strategy_distribution": {
+        "cooperate": 5,
         "meta_learning": 2,
-        "tit_for_tat": 3,
         "adaptive": 3,
-        "defect": 1,
-        "cooperate": 3
+        "tit_for_tat": 2
       },
       "memory_levels": {
         "fast": 0,
         "medium": 0,
         "slow": 0
       },
-      "cooperation_rate": 0.25
+      "cooperation_rate": 0.4166666666666667
     },
     {
       "generation": 2,
-      "total_payoff": 34,
-      "cooperation_count": 0,
+      "total_payoff": 33,
+      "cooperation_count": 1,
       "strategy_distribution": {
-        "meta_learning": 4,
-        "defect": 2,
-        "tit_for_tat": 4,
-        "adaptive": 2
-      },
-      "memory_levels": {
-        "fast": 0,
-        "medium": 0,
-        "slow": 0
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 3,
-      "total_payoff": 34,
-      "cooperation_count": 3,
-      "strategy_distribution": {
-        "adaptive": 4,
-        "tit_for_tat": 3,
-        "cooperate": 3,
-        "defect": 2
-      },
-      "memory_levels": {
-        "fast": 0,
-        "medium": 0,
-        "slow": 0
-      },
-      "cooperation_rate": 0.25
-    },
-    {
-      "generation": 4,
-      "total_payoff": 35,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "tit_for_tat": 9,
-        "meta_learning": 1,
-        "defect": 1,
-        "adaptive": 1
-      },
-      "memory_levels": {
-        "fast": 1,
-        "medium": 0,
-        "slow": 0
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 5,
-      "total_payoff": 28,
-      "cooperation_count": 2,
-      "strategy_distribution": {
-        "meta_learning": 1,
-        "cooperate": 2,
-        "defect": 6,
+        "adaptive": 3,
+        "defect": 3,
+        "cooperate": 1,
+        "meta_learning": 2,
         "tit_for_tat": 3
       },
       "memory_levels": {
-        "fast": 5,
+        "fast": 0,
+        "medium": 0,
+        "slow": 0
+      },
+      "cooperation_rate": 0.08333333333333333
+    },
+    {
+      "generation": 3,
+      "total_payoff": 36,
+      "cooperation_count": 4,
+      "strategy_distribution": {
+        "meta_learning": 4,
+        "cooperate": 4,
+        "adaptive": 4
+      },
+      "memory_levels": {
+        "fast": 0,
+        "medium": 0,
+        "slow": 0
+      },
+      "cooperation_rate": 0.3333333333333333
+    },
+    {
+      "generation": 4,
+      "total_payoff": 36,
+      "cooperation_count": 5,
+      "strategy_distribution": {
+        "cooperate": 5,
+        "meta_learning": 7
+      },
+      "memory_levels": {
+        "fast": 0,
+        "medium": 0,
+        "slow": 0
+      },
+      "cooperation_rate": 0.4166666666666667
+    },
+    {
+      "generation": 5,
+      "total_payoff": 36,
+      "cooperation_count": 2,
+      "strategy_distribution": {
+        "adaptive": 4,
+        "tit_for_tat": 5,
+        "cooperate": 2,
+        "meta_learning": 1
+      },
+      "memory_levels": {
+        "fast": 3,
         "medium": 0,
         "slow": 0
       },
@@ -88,1275 +85,1436 @@
     },
     {
       "generation": 6,
-      "total_payoff": 25,
-      "cooperation_count": 2,
+      "total_payoff": 35,
+      "cooperation_count": 5,
       "strategy_distribution": {
-        "tit_for_tat": 3,
-        "defect": 7,
-        "cooperate": 2
+        "tit_for_tat": 2,
+        "adaptive": 4,
+        "cooperate": 5,
+        "defect": 1
       },
       "memory_levels": {
         "fast": 6,
         "medium": 0,
-        "slow": 1
+        "slow": 0
+      },
+      "cooperation_rate": 0.4166666666666667
+    },
+    {
+      "generation": 7,
+      "total_payoff": 36,
+      "cooperation_count": 4,
+      "strategy_distribution": {
+        "cooperate": 4,
+        "meta_learning": 2,
+        "tit_for_tat": 3,
+        "adaptive": 3
+      },
+      "memory_levels": {
+        "fast": 9,
+        "medium": 0,
+        "slow": 0
+      },
+      "cooperation_rate": 0.3333333333333333
+    },
+    {
+      "generation": 8,
+      "total_payoff": 35,
+      "cooperation_count": 3,
+      "strategy_distribution": {
+        "cooperate": 3,
+        "tit_for_tat": 4,
+        "adaptive": 3,
+        "defect": 1,
+        "meta_learning": 1
+      },
+      "memory_levels": {
+        "fast": 13,
+        "medium": 0,
+        "slow": 0
+      },
+      "cooperation_rate": 0.25
+    },
+    {
+      "generation": 9,
+      "total_payoff": 34,
+      "cooperation_count": 2,
+      "strategy_distribution": {
+        "tit_for_tat": 5,
+        "meta_learning": 2,
+        "adaptive": 1,
+        "cooperate": 2,
+        "defect": 2
+      },
+      "memory_levels": {
+        "fast": 15,
+        "medium": 0,
+        "slow": 0
       },
       "cooperation_rate": 0.16666666666666666
     },
     {
-      "generation": 7,
-      "total_payoff": 18,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "tit_for_tat": 1,
-        "defect": 10,
-        "adaptive": 1
-      },
-      "memory_levels": {
-        "fast": 8,
-        "medium": 0,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 8,
-      "total_payoff": 30,
-      "cooperation_count": 1,
-      "strategy_distribution": {
-        "tit_for_tat": 5,
-        "defect": 6,
-        "cooperate": 1
-      },
-      "memory_levels": {
-        "fast": 8,
-        "medium": 0,
-        "slow": 1
-      },
-      "cooperation_rate": 0.08333333333333333
-    },
-    {
-      "generation": 9,
-      "total_payoff": 27,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "tit_for_tat": 5,
-        "defect": 7
-      },
-      "memory_levels": {
-        "fast": 8,
-        "medium": 1,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
       "generation": 10,
-      "total_payoff": 18,
-      "cooperation_count": 0,
+      "total_payoff": 34,
+      "cooperation_count": 4,
       "strategy_distribution": {
-        "defect": 10,
-        "tit_for_tat": 2
+        "meta_learning": 2,
+        "adaptive": 2,
+        "tit_for_tat": 2,
+        "cooperate": 4,
+        "defect": 2
       },
       "memory_levels": {
-        "fast": 8,
-        "medium": 1,
-        "slow": 1
+        "fast": 17,
+        "medium": 0,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.3333333333333333
     },
     {
       "generation": 11,
-      "total_payoff": 25,
+      "total_payoff": 34,
       "cooperation_count": 1,
       "strategy_distribution": {
-        "cooperate": 1,
-        "defect": 7,
-        "tit_for_tat": 4
+        "defect": 2,
+        "meta_learning": 4,
+        "tit_for_tat": 4,
+        "adaptive": 1,
+        "cooperate": 1
       },
       "memory_levels": {
-        "fast": 8,
-        "medium": 1,
-        "slow": 1
+        "fast": 20,
+        "medium": 0,
+        "slow": 0
       },
       "cooperation_rate": 0.08333333333333333
     },
     {
       "generation": 12,
-      "total_payoff": 24,
-      "cooperation_count": 0,
+      "total_payoff": 25,
+      "cooperation_count": 2,
       "strategy_distribution": {
-        "defect": 8,
-        "tit_for_tat": 4
+        "tit_for_tat": 3,
+        "defect": 7,
+        "cooperate": 2
       },
       "memory_levels": {
-        "fast": 11,
+        "fast": 25,
         "medium": 1,
-        "slow": 1
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 13,
-      "total_payoff": 15,
+      "total_payoff": 26,
       "cooperation_count": 0,
       "strategy_distribution": {
-        "defect": 11,
-        "tit_for_tat": 1
+        "adaptive": 1,
+        "tit_for_tat": 4,
+        "defect": 6,
+        "meta_learning": 1
       },
       "memory_levels": {
-        "fast": 11,
+        "fast": 27,
         "medium": 1,
-        "slow": 1
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 14,
-      "total_payoff": 19,
-      "cooperation_count": 0,
+      "total_payoff": 33,
+      "cooperation_count": 3,
       "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
+        "adaptive": 2,
+        "cooperate": 3,
+        "defect": 3,
+        "meta_learning": 2,
+        "tit_for_tat": 2
       },
       "memory_levels": {
-        "fast": 11,
+        "fast": 30,
         "medium": 1,
-        "slow": 1
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.25
     },
     {
       "generation": 15,
-      "total_payoff": 24,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 8,
-        "tit_for_tat": 4
-      },
-      "memory_levels": {
-        "fast": 12,
-        "medium": 1,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 16,
-      "total_payoff": 21,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
-      },
-      "memory_levels": {
-        "fast": 12,
-        "medium": 1,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 17,
-      "total_payoff": 24,
+      "total_payoff": 20,
       "cooperation_count": 1,
       "strategy_distribution": {
         "defect": 8,
-        "tit_for_tat": 2,
+        "tit_for_tat": 1,
+        "meta_learning": 1,
         "adaptive": 1,
         "cooperate": 1
       },
       "memory_levels": {
-        "fast": 12,
-        "medium": 2,
-        "slow": 1
+        "fast": 35,
+        "medium": 1,
+        "slow": 0
+      },
+      "cooperation_rate": 0.08333333333333333
+    },
+    {
+      "generation": 16,
+      "total_payoff": 28,
+      "cooperation_count": 1,
+      "strategy_distribution": {
+        "tit_for_tat": 3,
+        "defect": 6,
+        "meta_learning": 1,
+        "adaptive": 1,
+        "cooperate": 1
+      },
+      "memory_levels": {
+        "fast": 39,
+        "medium": 1,
+        "slow": 0
+      },
+      "cooperation_rate": 0.08333333333333333
+    },
+    {
+      "generation": 17,
+      "total_payoff": 29,
+      "cooperation_count": 1,
+      "strategy_distribution": {
+        "meta_learning": 3,
+        "tit_for_tat": 2,
+        "defect": 5,
+        "cooperate": 1,
+        "adaptive": 1
+      },
+      "memory_levels": {
+        "fast": 41,
+        "medium": 1,
+        "slow": 0
       },
       "cooperation_rate": 0.08333333333333333
     },
     {
       "generation": 18,
-      "total_payoff": 18,
-      "cooperation_count": 0,
+      "total_payoff": 33,
+      "cooperation_count": 3,
       "strategy_distribution": {
-        "defect": 10,
-        "tit_for_tat": 2
-      },
-      "memory_levels": {
-        "fast": 12,
-        "medium": 2,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 19,
-      "total_payoff": 21,
-      "cooperation_count": 1,
-      "strategy_distribution": {
-        "defect": 9,
-        "cooperate": 1,
-        "tit_for_tat": 2
-      },
-      "memory_levels": {
-        "fast": 12,
-        "medium": 2,
-        "slow": 1
-      },
-      "cooperation_rate": 0.08333333333333333
-    },
-    {
-      "generation": 20,
-      "total_payoff": 24,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 8,
-        "tit_for_tat": 4
-      },
-      "memory_levels": {
-        "fast": 12,
-        "medium": 2,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 21,
-      "total_payoff": 26,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "tit_for_tat": 6,
-        "defect": 6
-      },
-      "memory_levels": {
-        "fast": 12,
-        "medium": 2,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 22,
-      "total_payoff": 28,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 6,
-        "tit_for_tat": 6
-      },
-      "memory_levels": {
-        "fast": 16,
-        "medium": 3,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 23,
-      "total_payoff": 22,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "tit_for_tat": 4,
-        "defect": 8
-      },
-      "memory_levels": {
-        "fast": 18,
-        "medium": 3,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 24,
-      "total_payoff": 26,
-      "cooperation_count": 1,
-      "strategy_distribution": {
-        "tit_for_tat": 5,
-        "cooperate": 1,
-        "defect": 6
-      },
-      "memory_levels": {
-        "fast": 20,
-        "medium": 3,
-        "slow": 1
-      },
-      "cooperation_rate": 0.08333333333333333
-    },
-    {
-      "generation": 25,
-      "total_payoff": 24,
-      "cooperation_count": 0,
-      "strategy_distribution": {
+        "adaptive": 2,
+        "defect": 3,
+        "cooperate": 3,
         "tit_for_tat": 3,
-        "defect": 8,
         "meta_learning": 1
       },
       "memory_levels": {
-        "fast": 24,
-        "medium": 3,
-        "slow": 1
+        "fast": 43,
+        "medium": 1,
+        "slow": 0
+      },
+      "cooperation_rate": 0.25
+    },
+    {
+      "generation": 19,
+      "total_payoff": 34,
+      "cooperation_count": 4,
+      "strategy_distribution": {
+        "cooperate": 4,
+        "tit_for_tat": 3,
+        "defect": 2,
+        "meta_learning": 1,
+        "adaptive": 2
+      },
+      "memory_levels": {
+        "fast": 49,
+        "medium": 1,
+        "slow": 0
+      },
+      "cooperation_rate": 0.3333333333333333
+    },
+    {
+      "generation": 20,
+      "total_payoff": 30,
+      "cooperation_count": 4,
+      "strategy_distribution": {
+        "defect": 4,
+        "tit_for_tat": 2,
+        "cooperate": 4,
+        "meta_learning": 1,
+        "adaptive": 1
+      },
+      "memory_levels": {
+        "fast": 57,
+        "medium": 2,
+        "slow": 0
+      },
+      "cooperation_rate": 0.3333333333333333
+    },
+    {
+      "generation": 21,
+      "total_payoff": 28,
+      "cooperation_count": 2,
+      "strategy_distribution": {
+        "tit_for_tat": 3,
+        "defect": 6,
+        "cooperate": 2,
+        "adaptive": 1
+      },
+      "memory_levels": {
+        "fast": 63,
+        "medium": 2,
+        "slow": 0
+      },
+      "cooperation_rate": 0.16666666666666666
+    },
+    {
+      "generation": 22,
+      "total_payoff": 29,
+      "cooperation_count": 2,
+      "strategy_distribution": {
+        "defect": 5,
+        "cooperate": 2,
+        "adaptive": 1,
+        "tit_for_tat": 1,
+        "meta_learning": 3
+      },
+      "memory_levels": {
+        "fast": 65,
+        "medium": 2,
+        "slow": 0
+      },
+      "cooperation_rate": 0.16666666666666666
+    },
+    {
+      "generation": 23,
+      "total_payoff": 29,
+      "cooperation_count": 3,
+      "strategy_distribution": {
+        "cooperate": 3,
+        "defect": 5,
+        "meta_learning": 1,
+        "tit_for_tat": 2,
+        "adaptive": 1
+      },
+      "memory_levels": {
+        "fast": 69,
+        "medium": 2,
+        "slow": 0
+      },
+      "cooperation_rate": 0.25
+    },
+    {
+      "generation": 24,
+      "total_payoff": 25,
+      "cooperation_count": 0,
+      "strategy_distribution": {
+        "meta_learning": 3,
+        "adaptive": 2,
+        "defect": 7
+      },
+      "memory_levels": {
+        "fast": 72,
+        "medium": 2,
+        "slow": 0
+      },
+      "cooperation_rate": 0.0
+    },
+    {
+      "generation": 25,
+      "total_payoff": 26,
+      "cooperation_count": 0,
+      "strategy_distribution": {
+        "defect": 6,
+        "adaptive": 1,
+        "meta_learning": 1,
+        "tit_for_tat": 4
+      },
+      "memory_levels": {
+        "fast": 74,
+        "medium": 2,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 26,
-      "total_payoff": 12,
-      "cooperation_count": 0,
+      "total_payoff": 24,
+      "cooperation_count": 2,
       "strategy_distribution": {
-        "defect": 12
+        "defect": 8,
+        "tit_for_tat": 2,
+        "cooperate": 2
       },
       "memory_levels": {
-        "fast": 24,
-        "medium": 4,
-        "slow": 1
+        "fast": 77,
+        "medium": 2,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 27,
-      "total_payoff": 15,
-      "cooperation_count": 0,
+      "total_payoff": 27,
+      "cooperation_count": 2,
       "strategy_distribution": {
-        "defect": 11,
-        "tit_for_tat": 1
+        "cooperate": 2,
+        "defect": 7,
+        "tit_for_tat": 2,
+        "meta_learning": 1
       },
       "memory_levels": {
-        "fast": 24,
+        "fast": 77,
         "medium": 4,
-        "slow": 1
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 28,
-      "total_payoff": 25,
-      "cooperation_count": 0,
+      "total_payoff": 29,
+      "cooperation_count": 1,
       "strategy_distribution": {
-        "defect": 7,
-        "adaptive": 1,
-        "tit_for_tat": 4
+        "defect": 5,
+        "meta_learning": 1,
+        "tit_for_tat": 2,
+        "adaptive": 3,
+        "cooperate": 1
       },
       "memory_levels": {
-        "fast": 24,
+        "fast": 77,
         "medium": 4,
-        "slow": 1
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.08333333333333333
     },
     {
       "generation": 29,
-      "total_payoff": 21,
-      "cooperation_count": 0,
+      "total_payoff": 23,
+      "cooperation_count": 2,
       "strategy_distribution": {
-        "tit_for_tat": 3,
-        "defect": 9
+        "defect": 7,
+        "meta_learning": 2,
+        "tit_for_tat": 1,
+        "cooperate": 2
       },
       "memory_levels": {
-        "fast": 26,
+        "fast": 81,
         "medium": 4,
-        "slow": 1
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 30,
-      "total_payoff": 21,
-      "cooperation_count": 0,
+      "total_payoff": 28,
+      "cooperation_count": 1,
       "strategy_distribution": {
-        "defect": 9,
-        "adaptive": 1,
-        "tit_for_tat": 2
+        "defect": 6,
+        "tit_for_tat": 1,
+        "cooperate": 1,
+        "adaptive": 4
       },
       "memory_levels": {
-        "fast": 26,
-        "medium": 5,
-        "slow": 1
+        "fast": 85,
+        "medium": 4,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.08333333333333333
     },
     {
       "generation": 31,
-      "total_payoff": 18,
-      "cooperation_count": 0,
+      "total_payoff": 28,
+      "cooperation_count": 2,
       "strategy_distribution": {
+        "meta_learning": 1,
+        "defect": 6,
         "tit_for_tat": 2,
-        "defect": 10
+        "adaptive": 1,
+        "cooperate": 2
       },
       "memory_levels": {
-        "fast": 26,
-        "medium": 6,
-        "slow": 1
+        "fast": 87,
+        "medium": 5,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 32,
-      "total_payoff": 21,
-      "cooperation_count": 0,
+      "total_payoff": 26,
+      "cooperation_count": 2,
       "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
+        "adaptive": 2,
+        "tit_for_tat": 2,
+        "cooperate": 2,
+        "defect": 6
       },
       "memory_levels": {
-        "fast": 26,
+        "fast": 89,
         "medium": 6,
-        "slow": 1
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 33,
-      "total_payoff": 18,
-      "cooperation_count": 0,
+      "total_payoff": 29,
+      "cooperation_count": 2,
       "strategy_distribution": {
+        "defect": 5,
         "tit_for_tat": 2,
-        "defect": 10
+        "cooperate": 2,
+        "adaptive": 1,
+        "meta_learning": 2
       },
       "memory_levels": {
-        "fast": 26,
-        "medium": 7,
-        "slow": 1
+        "fast": 93,
+        "medium": 6,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 34,
+      "total_payoff": 25,
+      "cooperation_count": 2,
+      "strategy_distribution": {
+        "defect": 7,
+        "meta_learning": 2,
+        "tit_for_tat": 1,
+        "cooperate": 2
+      },
+      "memory_levels": {
+        "fast": 97,
+        "medium": 7,
+        "slow": 0
+      },
+      "cooperation_rate": 0.16666666666666666
+    },
+    {
+      "generation": 35,
       "total_payoff": 26,
       "cooperation_count": 0,
       "strategy_distribution": {
         "defect": 6,
-        "tit_for_tat": 6
+        "adaptive": 3,
+        "tit_for_tat": 3
       },
       "memory_levels": {
-        "fast": 26,
+        "fast": 99,
         "medium": 7,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 35,
-      "total_payoff": 21,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "meta_learning": 1,
-        "defect": 9,
-        "tit_for_tat": 2
-      },
-      "memory_levels": {
-        "fast": 30,
-        "medium": 7,
-        "slow": 1
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 36,
-      "total_payoff": 22,
-      "cooperation_count": 0,
+      "total_payoff": 31,
+      "cooperation_count": 2,
       "strategy_distribution": {
-        "defect": 8,
-        "tit_for_tat": 4
+        "defect": 5,
+        "meta_learning": 3,
+        "cooperate": 2,
+        "tit_for_tat": 2
       },
       "memory_levels": {
-        "fast": 30,
-        "medium": 8,
-        "slow": 1
+        "fast": 100,
+        "medium": 7,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 37,
-      "total_payoff": 24,
-      "cooperation_count": 1,
+      "total_payoff": 33,
+      "cooperation_count": 3,
       "strategy_distribution": {
         "tit_for_tat": 3,
-        "defect": 8,
-        "cooperate": 1
+        "defect": 3,
+        "cooperate": 3,
+        "adaptive": 3
       },
       "memory_levels": {
-        "fast": 32,
+        "fast": 100,
         "medium": 8,
-        "slow": 1
+        "slow": 0
       },
-      "cooperation_rate": 0.08333333333333333
+      "cooperation_rate": 0.25
     },
     {
       "generation": 38,
-      "total_payoff": 30,
+      "total_payoff": 26,
       "cooperation_count": 1,
       "strategy_distribution": {
         "defect": 6,
-        "cooperate": 1,
-        "tit_for_tat": 4,
-        "adaptive": 1
+        "adaptive": 4,
+        "meta_learning": 1,
+        "cooperate": 1
       },
       "memory_levels": {
-        "fast": 32,
+        "fast": 100,
         "medium": 8,
-        "slow": 1
+        "slow": 0
       },
       "cooperation_rate": 0.08333333333333333
     },
     {
       "generation": 39,
-      "total_payoff": 15,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 11,
-        "tit_for_tat": 1
-      },
-      "memory_levels": {
-        "fast": 32,
-        "medium": 8,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 40,
-      "total_payoff": 21,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
-      },
-      "memory_levels": {
-        "fast": 32,
-        "medium": 8,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 41,
-      "total_payoff": 18,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 10,
-        "tit_for_tat": 2
-      },
-      "memory_levels": {
-        "fast": 32,
-        "medium": 9,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 42,
-      "total_payoff": 20,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "tit_for_tat": 4,
-        "defect": 8
-      },
-      "memory_levels": {
-        "fast": 32,
-        "medium": 9,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 43,
-      "total_payoff": 29,
+      "total_payoff": 33,
       "cooperation_count": 1,
       "strategy_distribution": {
-        "tit_for_tat": 6,
-        "defect": 5,
+        "meta_learning": 3,
+        "defect": 3,
+        "tit_for_tat": 4,
+        "adaptive": 1,
         "cooperate": 1
       },
       "memory_levels": {
-        "fast": 36,
-        "medium": 9,
-        "slow": 1
+        "fast": 100,
+        "medium": 8,
+        "slow": 0
       },
       "cooperation_rate": 0.08333333333333333
     },
     {
-      "generation": 44,
+      "generation": 40,
+      "total_payoff": 29,
+      "cooperation_count": 1,
+      "strategy_distribution": {
+        "meta_learning": 1,
+        "cooperate": 1,
+        "tit_for_tat": 3,
+        "defect": 5,
+        "adaptive": 2
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 9,
+        "slow": 0
+      },
+      "cooperation_rate": 0.08333333333333333
+    },
+    {
+      "generation": 41,
+      "total_payoff": 34,
+      "cooperation_count": 2,
+      "strategy_distribution": {
+        "adaptive": 5,
+        "defect": 2,
+        "cooperate": 2,
+        "meta_learning": 1,
+        "tit_for_tat": 2
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 9,
+        "slow": 0
+      },
+      "cooperation_rate": 0.16666666666666666
+    },
+    {
+      "generation": 42,
+      "total_payoff": 30,
+      "cooperation_count": 2,
+      "strategy_distribution": {
+        "defect": 4,
+        "adaptive": 3,
+        "tit_for_tat": 3,
+        "cooperate": 2
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 9,
+        "slow": 0
+      },
+      "cooperation_rate": 0.16666666666666666
+    },
+    {
+      "generation": 43,
       "total_payoff": 26,
       "cooperation_count": 3,
       "strategy_distribution": {
+        "defect": 6,
         "cooperate": 3,
-        "tit_for_tat": 3,
-        "defect": 6
+        "tit_for_tat": 2,
+        "meta_learning": 1
       },
       "memory_levels": {
-        "fast": 40,
+        "fast": 100,
         "medium": 9,
-        "slow": 1
+        "slow": 0
       },
       "cooperation_rate": 0.25
     },
     {
+      "generation": 44,
+      "total_payoff": 29,
+      "cooperation_count": 5,
+      "strategy_distribution": {
+        "defect": 5,
+        "cooperate": 5,
+        "tit_for_tat": 1,
+        "meta_learning": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 9,
+        "slow": 0
+      },
+      "cooperation_rate": 0.4166666666666667
+    },
+    {
       "generation": 45,
-      "total_payoff": 23,
-      "cooperation_count": 1,
+      "total_payoff": 27,
+      "cooperation_count": 3,
       "strategy_distribution": {
-        "defect": 7,
-        "cooperate": 1,
-        "tit_for_tat": 4
-      },
-      "memory_levels": {
-        "fast": 44,
-        "medium": 10,
-        "slow": 1
-      },
-      "cooperation_rate": 0.08333333333333333
-    },
-    {
-      "generation": 46,
-      "total_payoff": 21,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
-      },
-      "memory_levels": {
-        "fast": 48,
-        "medium": 10,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 47,
-      "total_payoff": 21,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "tit_for_tat": 3,
-        "defect": 9
-      },
-      "memory_levels": {
-        "fast": 48,
-        "medium": 10,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 48,
-      "total_payoff": 18,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 10,
+        "defect": 5,
+        "cooperate": 3,
+        "meta_learning": 2,
         "adaptive": 1,
         "tit_for_tat": 1
       },
       "memory_levels": {
-        "fast": 48,
-        "medium": 11,
-        "slow": 1
+        "fast": 100,
+        "medium": 9,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.25
+    },
+    {
+      "generation": 46,
+      "total_payoff": 27,
+      "cooperation_count": 2,
+      "strategy_distribution": {
+        "tit_for_tat": 1,
+        "defect": 5,
+        "meta_learning": 1,
+        "cooperate": 2,
+        "adaptive": 3
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 9,
+        "slow": 0
+      },
+      "cooperation_rate": 0.16666666666666666
+    },
+    {
+      "generation": 47,
+      "total_payoff": 25,
+      "cooperation_count": 1,
+      "strategy_distribution": {
+        "defect": 7,
+        "tit_for_tat": 3,
+        "meta_learning": 1,
+        "cooperate": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 9,
+        "slow": 0
+      },
+      "cooperation_rate": 0.08333333333333333
+    },
+    {
+      "generation": 48,
+      "total_payoff": 32,
+      "cooperation_count": 1,
+      "strategy_distribution": {
+        "defect": 4,
+        "adaptive": 4,
+        "meta_learning": 1,
+        "tit_for_tat": 2,
+        "cooperate": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 9,
+        "slow": 0
+      },
+      "cooperation_rate": 0.08333333333333333
     },
     {
       "generation": 49,
-      "total_payoff": 21,
+      "total_payoff": 29,
       "cooperation_count": 0,
       "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
+        "defect": 5,
+        "meta_learning": 3,
+        "adaptive": 2,
+        "tit_for_tat": 2
       },
       "memory_levels": {
-        "fast": 48,
-        "medium": 12,
-        "slow": 1
+        "fast": 100,
+        "medium": 9,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 50,
-      "total_payoff": 22,
-      "cooperation_count": 0,
+      "total_payoff": 31,
+      "cooperation_count": 3,
       "strategy_distribution": {
-        "meta_learning": 1,
-        "defect": 8,
-        "tit_for_tat": 3
+        "cooperate": 3,
+        "defect": 5,
+        "meta_learning": 2,
+        "tit_for_tat": 2
       },
       "memory_levels": {
-        "fast": 48,
-        "medium": 12,
-        "slow": 1
+        "fast": 100,
+        "medium": 10,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.25
     },
     {
       "generation": 51,
-      "total_payoff": 21,
-      "cooperation_count": 0,
+      "total_payoff": 27,
+      "cooperation_count": 3,
       "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
+        "tit_for_tat": 3,
+        "meta_learning": 1,
+        "cooperate": 3,
+        "defect": 5
       },
       "memory_levels": {
-        "fast": 50,
-        "medium": 12,
-        "slow": 1
+        "fast": 100,
+        "medium": 10,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.25
     },
     {
       "generation": 52,
-      "total_payoff": 30,
-      "cooperation_count": 0,
+      "total_payoff": 21,
+      "cooperation_count": 1,
       "strategy_distribution": {
-        "defect": 6,
-        "tit_for_tat": 6
+        "defect": 9,
+        "meta_learning": 2,
+        "cooperate": 1
       },
       "memory_levels": {
-        "fast": 50,
-        "medium": 12,
-        "slow": 1
+        "fast": 100,
+        "medium": 10,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.08333333333333333
     },
     {
       "generation": 53,
-      "total_payoff": 25,
+      "total_payoff": 34,
       "cooperation_count": 0,
       "strategy_distribution": {
-        "tit_for_tat": 5,
-        "defect": 7
+        "meta_learning": 4,
+        "tit_for_tat": 3,
+        "adaptive": 3,
+        "defect": 2
       },
       "memory_levels": {
-        "fast": 50,
-        "medium": 13,
-        "slow": 1
+        "fast": 100,
+        "medium": 10,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 54,
-      "total_payoff": 18,
+      "total_payoff": 29,
       "cooperation_count": 0,
       "strategy_distribution": {
-        "defect": 10,
-        "tit_for_tat": 2
+        "adaptive": 4,
+        "defect": 5,
+        "tit_for_tat": 3
       },
       "memory_levels": {
-        "fast": 52,
-        "medium": 13,
-        "slow": 1
+        "fast": 100,
+        "medium": 11,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 55,
-      "total_payoff": 18,
+      "total_payoff": 25,
       "cooperation_count": 0,
       "strategy_distribution": {
-        "defect": 10,
-        "tit_for_tat": 2
+        "defect": 7,
+        "tit_for_tat": 2,
+        "meta_learning": 2,
+        "adaptive": 1
       },
       "memory_levels": {
-        "fast": 52,
-        "medium": 13,
-        "slow": 1
+        "fast": 100,
+        "medium": 12,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 56,
-      "total_payoff": 19,
-      "cooperation_count": 0,
+      "total_payoff": 26,
+      "cooperation_count": 2,
       "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
+        "meta_learning": 1,
+        "cooperate": 2,
+        "defect": 6,
+        "adaptive": 1,
+        "tit_for_tat": 2
       },
       "memory_levels": {
-        "fast": 52,
+        "fast": 100,
         "medium": 13,
-        "slow": 1
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 57,
-      "total_payoff": 18,
-      "cooperation_count": 0,
+      "total_payoff": 30,
+      "cooperation_count": 1,
       "strategy_distribution": {
-        "defect": 10,
-        "tit_for_tat": 2
+        "tit_for_tat": 3,
+        "meta_learning": 3,
+        "adaptive": 1,
+        "defect": 4,
+        "cooperate": 1
       },
       "memory_levels": {
-        "fast": 54,
+        "fast": 100,
         "medium": 13,
-        "slow": 1
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.08333333333333333
     },
     {
       "generation": 58,
-      "total_payoff": 18,
+      "total_payoff": 21,
       "cooperation_count": 0,
       "strategy_distribution": {
-        "defect": 10,
-        "tit_for_tat": 2
+        "defect": 9,
+        "adaptive": 1,
+        "meta_learning": 2
       },
       "memory_levels": {
-        "fast": 54,
-        "medium": 14,
-        "slow": 1
+        "fast": 100,
+        "medium": 13,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 59,
-      "total_payoff": 24,
-      "cooperation_count": 0,
+      "total_payoff": 29,
+      "cooperation_count": 4,
       "strategy_distribution": {
-        "defect": 8,
-        "tit_for_tat": 4
+        "defect": 5,
+        "cooperate": 4,
+        "tit_for_tat": 1,
+        "adaptive": 1,
+        "meta_learning": 1
       },
       "memory_levels": {
-        "fast": 54,
-        "medium": 14,
-        "slow": 1
+        "fast": 100,
+        "medium": 13,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.3333333333333333
     },
     {
       "generation": 60,
-      "total_payoff": 30,
+      "total_payoff": 26,
       "cooperation_count": 2,
       "strategy_distribution": {
+        "adaptive": 3,
         "cooperate": 2,
-        "tit_for_tat": 6,
-        "defect": 4
+        "meta_learning": 1,
+        "defect": 6
       },
       "memory_levels": {
-        "fast": 54,
-        "medium": 15,
-        "slow": 1
+        "fast": 100,
+        "medium": 14,
+        "slow": 0
       },
       "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 61,
-      "total_payoff": 18,
-      "cooperation_count": 2,
+      "total_payoff": 31,
+      "cooperation_count": 0,
       "strategy_distribution": {
-        "cooperate": 2,
-        "defect": 10
+        "meta_learning": 3,
+        "defect": 5,
+        "tit_for_tat": 3,
+        "adaptive": 1
       },
       "memory_levels": {
-        "fast": 60,
+        "fast": 100,
+        "medium": 14,
+        "slow": 0
+      },
+      "cooperation_rate": 0.0
+    },
+    {
+      "generation": 62,
+      "total_payoff": 26,
+      "cooperation_count": 1,
+      "strategy_distribution": {
+        "adaptive": 2,
+        "defect": 6,
+        "meta_learning": 2,
+        "tit_for_tat": 1,
+        "cooperate": 1
+      },
+      "memory_levels": {
+        "fast": 100,
         "medium": 15,
-        "slow": 1
+        "slow": 0
+      },
+      "cooperation_rate": 0.08333333333333333
+    },
+    {
+      "generation": 63,
+      "total_payoff": 26,
+      "cooperation_count": 2,
+      "strategy_distribution": {
+        "adaptive": 1,
+        "tit_for_tat": 2,
+        "defect": 6,
+        "cooperate": 2,
+        "meta_learning": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 15,
+        "slow": 0
       },
       "cooperation_rate": 0.16666666666666666
     },
     {
-      "generation": 62,
-      "total_payoff": 21,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
-      },
-      "memory_levels": {
-        "fast": 60,
-        "medium": 15,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 63,
-      "total_payoff": 18,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 10,
-        "tit_for_tat": 2
-      },
-      "memory_levels": {
-        "fast": 60,
-        "medium": 15,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
       "generation": 64,
-      "total_payoff": 19,
+      "total_payoff": 28,
       "cooperation_count": 0,
       "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
+        "adaptive": 4,
+        "defect": 6,
+        "meta_learning": 1,
+        "tit_for_tat": 1
       },
       "memory_levels": {
-        "fast": 60,
+        "fast": 100,
         "medium": 15,
-        "slow": 1
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 65,
-      "total_payoff": 15,
-      "cooperation_count": 0,
+      "total_payoff": 30,
+      "cooperation_count": 2,
       "strategy_distribution": {
-        "defect": 11,
+        "defect": 4,
+        "meta_learning": 3,
+        "adaptive": 2,
+        "cooperate": 2,
         "tit_for_tat": 1
       },
       "memory_levels": {
-        "fast": 62,
+        "fast": 100,
         "medium": 15,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 66,
-      "total_payoff": 24,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 8,
-        "tit_for_tat": 4
-      },
-      "memory_levels": {
-        "fast": 62,
-        "medium": 15,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 67,
-      "total_payoff": 18,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 10,
-        "tit_for_tat": 2
-      },
-      "memory_levels": {
-        "fast": 62,
-        "medium": 16,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 68,
-      "total_payoff": 26,
-      "cooperation_count": 1,
-      "strategy_distribution": {
-        "defect": 6,
-        "tit_for_tat": 5,
-        "cooperate": 1
-      },
-      "memory_levels": {
-        "fast": 62,
-        "medium": 16,
-        "slow": 1
-      },
-      "cooperation_rate": 0.08333333333333333
-    },
-    {
-      "generation": 69,
-      "total_payoff": 25,
-      "cooperation_count": 1,
-      "strategy_distribution": {
-        "tit_for_tat": 4,
-        "defect": 7,
-        "cooperate": 1
-      },
-      "memory_levels": {
-        "fast": 66,
-        "medium": 16,
-        "slow": 1
-      },
-      "cooperation_rate": 0.08333333333333333
-    },
-    {
-      "generation": 70,
-      "total_payoff": 21,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
-      },
-      "memory_levels": {
-        "fast": 68,
-        "medium": 17,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 71,
-      "total_payoff": 27,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 7,
-        "tit_for_tat": 5
-      },
-      "memory_levels": {
-        "fast": 68,
-        "medium": 17,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 72,
-      "total_payoff": 29,
-      "cooperation_count": 2,
-      "strategy_distribution": {
-        "tit_for_tat": 5,
-        "defect": 5,
-        "cooperate": 2
-      },
-      "memory_levels": {
-        "fast": 68,
-        "medium": 17,
-        "slow": 1
+        "slow": 0
       },
       "cooperation_rate": 0.16666666666666666
     },
     {
-      "generation": 73,
-      "total_payoff": 12,
-      "cooperation_count": 0,
+      "generation": 66,
+      "total_payoff": 31,
+      "cooperation_count": 2,
       "strategy_distribution": {
-        "defect": 12
+        "defect": 3,
+        "adaptive": 2,
+        "tit_for_tat": 4,
+        "cooperate": 2,
+        "meta_learning": 1
       },
       "memory_levels": {
-        "fast": 72,
-        "medium": 17,
-        "slow": 1
+        "fast": 100,
+        "medium": 15,
+        "slow": 0
+      },
+      "cooperation_rate": 0.16666666666666666
+    },
+    {
+      "generation": 67,
+      "total_payoff": 30,
+      "cooperation_count": 2,
+      "strategy_distribution": {
+        "adaptive": 2,
+        "cooperate": 2,
+        "defect": 4,
+        "tit_for_tat": 4
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 15,
+        "slow": 0
+      },
+      "cooperation_rate": 0.16666666666666666
+    },
+    {
+      "generation": 68,
+      "total_payoff": 26,
+      "cooperation_count": 3,
+      "strategy_distribution": {
+        "defect": 6,
+        "cooperate": 3,
+        "meta_learning": 2,
+        "tit_for_tat": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 16,
+        "slow": 0
+      },
+      "cooperation_rate": 0.25
+    },
+    {
+      "generation": 69,
+      "total_payoff": 25,
+      "cooperation_count": 0,
+      "strategy_distribution": {
+        "defect": 7,
+        "meta_learning": 3,
+        "adaptive": 1,
+        "tit_for_tat": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 16,
+        "slow": 0
       },
       "cooperation_rate": 0.0
+    },
+    {
+      "generation": 70,
+      "total_payoff": 28,
+      "cooperation_count": 1,
+      "strategy_distribution": {
+        "defect": 6,
+        "tit_for_tat": 3,
+        "meta_learning": 2,
+        "cooperate": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 16,
+        "slow": 0
+      },
+      "cooperation_rate": 0.08333333333333333
+    },
+    {
+      "generation": 71,
+      "total_payoff": 28,
+      "cooperation_count": 1,
+      "strategy_distribution": {
+        "defect": 6,
+        "tit_for_tat": 2,
+        "adaptive": 1,
+        "meta_learning": 2,
+        "cooperate": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 16,
+        "slow": 0
+      },
+      "cooperation_rate": 0.08333333333333333
+    },
+    {
+      "generation": 72,
+      "total_payoff": 33,
+      "cooperation_count": 3,
+      "strategy_distribution": {
+        "meta_learning": 4,
+        "adaptive": 2,
+        "defect": 3,
+        "cooperate": 3
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 17,
+        "slow": 0
+      },
+      "cooperation_rate": 0.25
+    },
+    {
+      "generation": 73,
+      "total_payoff": 29,
+      "cooperation_count": 1,
+      "strategy_distribution": {
+        "defect": 5,
+        "meta_learning": 3,
+        "tit_for_tat": 2,
+        "cooperate": 1,
+        "adaptive": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 18,
+        "slow": 0
+      },
+      "cooperation_rate": 0.08333333333333333
     },
     {
       "generation": 74,
-      "total_payoff": 18,
-      "cooperation_count": 0,
+      "total_payoff": 32,
+      "cooperation_count": 2,
       "strategy_distribution": {
-        "tit_for_tat": 2,
-        "defect": 10
+        "defect": 4,
+        "cooperate": 2,
+        "meta_learning": 4,
+        "tit_for_tat": 1,
+        "adaptive": 1
       },
       "memory_levels": {
-        "fast": 72,
-        "medium": 17,
-        "slow": 1
+        "fast": 100,
+        "medium": 18,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 75,
-      "total_payoff": 18,
-      "cooperation_count": 0,
+      "total_payoff": 31,
+      "cooperation_count": 1,
       "strategy_distribution": {
-        "defect": 10,
-        "tit_for_tat": 2
+        "tit_for_tat": 4,
+        "defect": 5,
+        "adaptive": 2,
+        "cooperate": 1
       },
       "memory_levels": {
-        "fast": 72,
-        "medium": 17,
-        "slow": 1
+        "fast": 100,
+        "medium": 18,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.08333333333333333
     },
     {
       "generation": 76,
-      "total_payoff": 18,
+      "total_payoff": 29,
       "cooperation_count": 0,
       "strategy_distribution": {
-        "defect": 10,
+        "meta_learning": 5,
+        "defect": 5,
         "tit_for_tat": 2
       },
       "memory_levels": {
-        "fast": 72,
-        "medium": 18,
-        "slow": 1
+        "fast": 100,
+        "medium": 19,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 77,
-      "total_payoff": 19,
+      "total_payoff": 22,
       "cooperation_count": 1,
       "strategy_distribution": {
-        "cooperate": 1,
-        "tit_for_tat": 2,
-        "defect": 9
+        "meta_learning": 2,
+        "adaptive": 1,
+        "defect": 8,
+        "cooperate": 1
       },
       "memory_levels": {
-        "fast": 72,
-        "medium": 18,
-        "slow": 1
+        "fast": 100,
+        "medium": 19,
+        "slow": 0
       },
       "cooperation_rate": 0.08333333333333333
     },
     {
       "generation": 78,
-      "total_payoff": 15,
+      "total_payoff": 29,
       "cooperation_count": 0,
       "strategy_distribution": {
-        "tit_for_tat": 1,
-        "defect": 11
+        "meta_learning": 3,
+        "defect": 5,
+        "adaptive": 3,
+        "tit_for_tat": 1
       },
       "memory_levels": {
-        "fast": 74,
-        "medium": 18,
-        "slow": 1
+        "fast": 100,
+        "medium": 20,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 79,
-      "total_payoff": 32,
-      "cooperation_count": 1,
-      "strategy_distribution": {
-        "cooperate": 1,
-        "defect": 4,
-        "tit_for_tat": 7
-      },
-      "memory_levels": {
-        "fast": 74,
-        "medium": 18,
-        "slow": 1
-      },
-      "cooperation_rate": 0.08333333333333333
-    },
-    {
-      "generation": 80,
-      "total_payoff": 29,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "meta_learning": 4,
-        "defect": 5,
-        "tit_for_tat": 2,
-        "adaptive": 1
-      },
-      "memory_levels": {
-        "fast": 78,
-        "medium": 19,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 81,
-      "total_payoff": 15,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "tit_for_tat": 1,
-        "defect": 11
-      },
-      "memory_levels": {
-        "fast": 82,
-        "medium": 19,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 82,
-      "total_payoff": 22,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "tit_for_tat": 4,
-        "defect": 8
-      },
-      "memory_levels": {
-        "fast": 82,
-        "medium": 19,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 83,
-      "total_payoff": 21,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
-      },
-      "memory_levels": {
-        "fast": 84,
-        "medium": 19,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 84,
-      "total_payoff": 24,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 8,
-        "tit_for_tat": 4
-      },
-      "memory_levels": {
-        "fast": 84,
-        "medium": 19,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 85,
-      "total_payoff": 16,
-      "cooperation_count": 0,
-      "strategy_distribution": {
-        "defect": 10,
-        "tit_for_tat": 2
-      },
-      "memory_levels": {
-        "fast": 84,
-        "medium": 24,
-        "slow": 1
-      },
-      "cooperation_rate": 0.0
-    },
-    {
-      "generation": 86,
       "total_payoff": 25,
       "cooperation_count": 2,
       "strategy_distribution": {
         "defect": 7,
         "cooperate": 2,
-        "tit_for_tat": 3
+        "adaptive": 2,
+        "meta_learning": 1
       },
       "memory_levels": {
-        "fast": 86,
-        "medium": 24,
-        "slow": 1
+        "fast": 100,
+        "medium": 21,
+        "slow": 0
       },
       "cooperation_rate": 0.16666666666666666
     },
     {
-      "generation": 87,
-      "total_payoff": 27,
+      "generation": 80,
+      "total_payoff": 22,
       "cooperation_count": 1,
       "strategy_distribution": {
-        "tit_for_tat": 4,
-        "defect": 7,
+        "defect": 8,
+        "meta_learning": 1,
+        "adaptive": 2,
         "cooperate": 1
       },
       "memory_levels": {
-        "fast": 87,
-        "medium": 25,
-        "slow": 1
+        "fast": 100,
+        "medium": 21,
+        "slow": 0
       },
       "cooperation_rate": 0.08333333333333333
     },
     {
-      "generation": 88,
-      "total_payoff": 32,
+      "generation": 81,
+      "total_payoff": 28,
       "cooperation_count": 1,
       "strategy_distribution": {
-        "tit_for_tat": 7,
-        "defect": 4,
-        "cooperate": 1
+        "defect": 6,
+        "tit_for_tat": 3,
+        "cooperate": 1,
+        "adaptive": 2
       },
       "memory_levels": {
-        "fast": 87,
-        "medium": 25,
-        "slow": 1
+        "fast": 100,
+        "medium": 22,
+        "slow": 0
+      },
+      "cooperation_rate": 0.08333333333333333
+    },
+    {
+      "generation": 82,
+      "total_payoff": 24,
+      "cooperation_count": 0,
+      "strategy_distribution": {
+        "defect": 8,
+        "adaptive": 2,
+        "tit_for_tat": 1,
+        "meta_learning": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 22,
+        "slow": 0
+      },
+      "cooperation_rate": 0.0
+    },
+    {
+      "generation": 83,
+      "total_payoff": 31,
+      "cooperation_count": 0,
+      "strategy_distribution": {
+        "defect": 5,
+        "tit_for_tat": 3,
+        "adaptive": 2,
+        "meta_learning": 2
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 22,
+        "slow": 0
+      },
+      "cooperation_rate": 0.0
+    },
+    {
+      "generation": 84,
+      "total_payoff": 26,
+      "cooperation_count": 1,
+      "strategy_distribution": {
+        "defect": 6,
+        "meta_learning": 2,
+        "cooperate": 1,
+        "adaptive": 3
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 22,
+        "slow": 0
+      },
+      "cooperation_rate": 0.08333333333333333
+    },
+    {
+      "generation": 85,
+      "total_payoff": 32,
+      "cooperation_count": 0,
+      "strategy_distribution": {
+        "adaptive": 6,
+        "meta_learning": 2,
+        "defect": 4
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 28,
+        "slow": 0
+      },
+      "cooperation_rate": 0.0
+    },
+    {
+      "generation": 86,
+      "total_payoff": 31,
+      "cooperation_count": 0,
+      "strategy_distribution": {
+        "defect": 5,
+        "meta_learning": 3,
+        "adaptive": 3,
+        "tit_for_tat": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 28,
+        "slow": 0
+      },
+      "cooperation_rate": 0.0
+    },
+    {
+      "generation": 87,
+      "total_payoff": 28,
+      "cooperation_count": 0,
+      "strategy_distribution": {
+        "meta_learning": 3,
+        "adaptive": 4,
+        "tit_for_tat": 1,
+        "defect": 4
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 30,
+        "slow": 0
+      },
+      "cooperation_rate": 0.0
+    },
+    {
+      "generation": 88,
+      "total_payoff": 33,
+      "cooperation_count": 1,
+      "strategy_distribution": {
+        "defect": 3,
+        "adaptive": 5,
+        "cooperate": 1,
+        "meta_learning": 2,
+        "tit_for_tat": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 30,
+        "slow": 0
       },
       "cooperation_rate": 0.08333333333333333
     },
@@ -1365,253 +1523,273 @@
       "total_payoff": 27,
       "cooperation_count": 1,
       "strategy_distribution": {
+        "tit_for_tat": 1,
+        "meta_learning": 4,
         "defect": 5,
-        "meta_learning": 1,
-        "tit_for_tat": 5,
+        "adaptive": 1,
         "cooperate": 1
       },
       "memory_levels": {
-        "fast": 90,
-        "medium": 25,
-        "slow": 1
+        "fast": 100,
+        "medium": 30,
+        "slow": 0
       },
       "cooperation_rate": 0.08333333333333333
     },
     {
       "generation": 90,
-      "total_payoff": 24,
-      "cooperation_count": 1,
-      "strategy_distribution": {
-        "defect": 8,
-        "adaptive": 1,
-        "tit_for_tat": 2,
-        "cooperate": 1
-      },
-      "memory_levels": {
-        "fast": 96,
-        "medium": 25,
-        "slow": 1
-      },
-      "cooperation_rate": 0.08333333333333333
-    },
-    {
-      "generation": 91,
-      "total_payoff": 21,
+      "total_payoff": 25,
       "cooperation_count": 0,
       "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 3
+        "adaptive": 3,
+        "defect": 7,
+        "meta_learning": 2
       },
       "memory_levels": {
-        "fast": 96,
-        "medium": 25,
-        "slow": 1
+        "fast": 100,
+        "medium": 30,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
-      "generation": 92,
-      "total_payoff": 28,
-      "cooperation_count": 0,
+      "generation": 91,
+      "total_payoff": 31,
+      "cooperation_count": 2,
       "strategy_distribution": {
-        "defect": 6,
-        "tit_for_tat": 6
+        "meta_learning": 2,
+        "adaptive": 5,
+        "cooperate": 2,
+        "defect": 3
       },
       "memory_levels": {
-        "fast": 96,
-        "medium": 26,
-        "slow": 1
+        "fast": 100,
+        "medium": 31,
+        "slow": 0
+      },
+      "cooperation_rate": 0.16666666666666666
+    },
+    {
+      "generation": 92,
+      "total_payoff": 21,
+      "cooperation_count": 0,
+      "strategy_distribution": {
+        "defect": 9,
+        "tit_for_tat": 1,
+        "meta_learning": 2
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 31,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 93,
-      "total_payoff": 27,
-      "cooperation_count": 1,
-      "strategy_distribution": {
-        "defect": 7,
-        "tit_for_tat": 4,
-        "cooperate": 1
-      },
-      "memory_levels": {
-        "fast": 98,
-        "medium": 26,
-        "slow": 1
-      },
-      "cooperation_rate": 0.08333333333333333
-    },
-    {
-      "generation": 94,
       "total_payoff": 29,
       "cooperation_count": 0,
       "strategy_distribution": {
+        "adaptive": 4,
+        "tit_for_tat": 2,
         "defect": 5,
-        "tit_for_tat": 7
+        "meta_learning": 1
       },
       "memory_levels": {
-        "fast": 98,
-        "medium": 26,
-        "slow": 1
+        "fast": 100,
+        "medium": 31,
+        "slow": 0
+      },
+      "cooperation_rate": 0.0
+    },
+    {
+      "generation": 94,
+      "total_payoff": 21,
+      "cooperation_count": 0,
+      "strategy_distribution": {
+        "defect": 9,
+        "meta_learning": 1,
+        "tit_for_tat": 1,
+        "adaptive": 1
+      },
+      "memory_levels": {
+        "fast": 100,
+        "medium": 32,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 95,
-      "total_payoff": 24,
+      "total_payoff": 25,
       "cooperation_count": 0,
       "strategy_distribution": {
-        "defect": 8,
-        "tit_for_tat": 4
+        "tit_for_tat": 2,
+        "meta_learning": 2,
+        "defect": 7,
+        "adaptive": 1
       },
       "memory_levels": {
         "fast": 100,
-        "medium": 26,
-        "slow": 1
+        "medium": 33,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 96,
-      "total_payoff": 27,
-      "cooperation_count": 1,
+      "total_payoff": 33,
+      "cooperation_count": 2,
       "strategy_distribution": {
-        "tit_for_tat": 4,
-        "defect": 7,
-        "cooperate": 1
+        "cooperate": 2,
+        "adaptive": 4,
+        "defect": 3,
+        "tit_for_tat": 1,
+        "meta_learning": 2
       },
       "memory_levels": {
         "fast": 100,
-        "medium": 27,
-        "slow": 1
+        "medium": 33,
+        "slow": 0
       },
-      "cooperation_rate": 0.08333333333333333
+      "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 97,
-      "total_payoff": 21,
-      "cooperation_count": 1,
+      "total_payoff": 33,
+      "cooperation_count": 0,
       "strategy_distribution": {
-        "defect": 9,
-        "tit_for_tat": 1,
-        "cooperate": 1,
-        "adaptive": 1
+        "tit_for_tat": 2,
+        "adaptive": 3,
+        "defect": 3,
+        "meta_learning": 4
       },
       "memory_levels": {
         "fast": 100,
-        "medium": 28,
-        "slow": 1
+        "medium": 33,
+        "slow": 0
       },
-      "cooperation_rate": 0.08333333333333333
+      "cooperation_rate": 0.0
     },
     {
       "generation": 98,
-      "total_payoff": 28,
+      "total_payoff": 34,
       "cooperation_count": 0,
       "strategy_distribution": {
-        "tit_for_tat": 6,
-        "defect": 6
+        "meta_learning": 4,
+        "adaptive": 5,
+        "defect": 2,
+        "tit_for_tat": 1
       },
       "memory_levels": {
         "fast": 100,
-        "medium": 28,
-        "slow": 1
+        "medium": 33,
+        "slow": 0
       },
       "cooperation_rate": 0.0
     },
     {
       "generation": 99,
-      "total_payoff": 27,
+      "total_payoff": 34,
       "cooperation_count": 2,
       "strategy_distribution": {
-        "defect": 7,
+        "adaptive": 3,
+        "meta_learning": 4,
         "cooperate": 2,
-        "tit_for_tat": 3
+        "defect": 2,
+        "tit_for_tat": 1
       },
       "memory_levels": {
         "fast": 100,
-        "medium": 28,
-        "slow": 1
+        "medium": 33,
+        "slow": 0
       },
       "cooperation_rate": 0.16666666666666666
     },
     {
       "generation": 100,
-      "total_payoff": 25,
-      "cooperation_count": 0,
+      "total_payoff": 35,
+      "cooperation_count": 1,
       "strategy_distribution": {
-        "defect": 7,
-        "tit_for_tat": 5
+        "adaptive": 5,
+        "cooperate": 1,
+        "tit_for_tat": 4,
+        "defect": 1,
+        "meta_learning": 1
       },
       "memory_levels": {
         "fast": 100,
-        "medium": 28,
-        "slow": 1
+        "medium": 33,
+        "slow": 0
       },
-      "cooperation_rate": 0.0
+      "cooperation_rate": 0.08333333333333333
     }
   ],
   "analysis": {
     "memory_utilization": {
-      "fast_avg": 48.03,
-      "medium_avg": 11.8,
-      "slow_avg": 0.95
+      "fast_avg": 81.34,
+      "medium_avg": 12.45,
+      "slow_avg": 0.0
     },
     "learning_efficiency": {
-      "improvement": -0.012499999999999997,
-      "payoff_gain": -0.4499999999999993
+      "improvement": -0.18333333333333332,
+      "payoff_gain": -3.099999999999998
     },
     "strategy_evolution": {
-      "defect": 0.5833333333333334,
-      "tit_for_tat": 0.4166666666666667
+      "adaptive": 0.4166666666666667,
+      "cooperate": 0.08333333333333333,
+      "tit_for_tat": 0.3333333333333333,
+      "defect": 0.08333333333333333,
+      "meta_learning": 0.08333333333333333
     },
     "self_modification_impact": {
       "agent_0": {
-        "weight_norm": 0.7183811384512834,
-        "avg_payoff": 1.97
+        "weight_norm": 0.832911467912606,
+        "avg_payoff": 2.4
       },
       "agent_1": {
-        "weight_norm": 1.1487968584231067,
-        "avg_payoff": 2.21
+        "weight_norm": 0.9206663300367403,
+        "avg_payoff": 2.19
       },
       "agent_2": {
-        "weight_norm": 0.6541380009825677,
-        "avg_payoff": 1.67
+        "weight_norm": 1.0240551657928767,
+        "avg_payoff": 2.46
       },
       "agent_3": {
-        "weight_norm": 0.6865197837853685,
-        "avg_payoff": 1.61
+        "weight_norm": 1.0804562775670306,
+        "avg_payoff": 2.48
       },
       "agent_4": {
-        "weight_norm": 0.8076471137557071,
-        "avg_payoff": 1.75
+        "weight_norm": 1.0067181030171974,
+        "avg_payoff": 2.5
       },
       "agent_5": {
-        "weight_norm": 1.148808729587861,
-        "avg_payoff": 2.09
+        "weight_norm": 0.9129775827141194,
+        "avg_payoff": 2.55
       },
       "agent_6": {
-        "weight_norm": 0.5373766635134805,
-        "avg_payoff": 1.59
+        "weight_norm": 0.9124746905110692,
+        "avg_payoff": 2.33
       },
       "agent_7": {
-        "weight_norm": 0.6930655940431647,
-        "avg_payoff": 1.91
+        "weight_norm": 0.9695281150596653,
+        "avg_payoff": 2.43
       },
       "agent_8": {
-        "weight_norm": 1.1760829250455058,
-        "avg_payoff": 2.12
+        "weight_norm": 0.8215821351204404,
+        "avg_payoff": 2.48
       },
       "agent_9": {
-        "weight_norm": 1.173073242343654,
-        "avg_payoff": 2.21
+        "weight_norm": 1.052773655671275,
+        "avg_payoff": 2.45
       },
       "agent_10": {
-        "weight_norm": 0.7672324860460565,
-        "avg_payoff": 1.6
+        "weight_norm": 0.7074831313292048,
+        "avg_payoff": 2.34
       },
       "agent_11": {
-        "weight_norm": 1.0648898813791372,
-        "avg_payoff": 2.14
+        "weight_norm": 0.8733368299281341,
+        "avg_payoff": 2.36
       }
     }
   },
