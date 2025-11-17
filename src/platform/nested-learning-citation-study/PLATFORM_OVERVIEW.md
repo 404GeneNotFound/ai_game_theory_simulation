@@ -20,6 +20,7 @@ A **multi-agent simulation platform** for studying citation behavior using cutti
 | `integration/citation_integrity_agent.py` | Production agent | 28KB | PostgreSQL, Redis, REST API integration |
 | `integration/citationAgentIntegration.ts` | TypeScript bridge | 19KB | Event-based, child process spawning |
 | `integration/citation_evaluation_benchmarks.py` | Benchmarking suite | 54KB | Comprehensive evaluation & comparison |
+| `integration/EVALUATION_BENCHMARKS_COMPLETE.md` | Benchmark docs | 11KB | 50+ metrics, 7 datasets, baselines |
 | `integration/COMPLETE_AGENT_DOCUMENTATION.md` | System docs | 8.8KB | Architecture, API, deployment |
 | `integration/README.md` | Integration guide | - | Setup, usage, troubleshooting |
 

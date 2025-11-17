@@ -59,6 +59,7 @@ src/platform/nested-learning-citation-study/
 - **`integration/citation_integrity_agent.py`** (28KB) - Production agent with DB/Redis integration
 - **`integration/citationAgentIntegration.ts`** (19KB) - TypeScript bridge for platform integration
 - **`integration/citation_evaluation_benchmarks.py`** (54KB) - Comprehensive benchmarking suite
+- **`integration/EVALUATION_BENCHMARKS_COMPLETE.md`** (11KB) - Complete benchmarking documentation
 - **`integration/COMPLETE_AGENT_DOCUMENTATION.md`** (8.8KB) - Full integration documentation
 - **`integration/README.md`** - Integration layer guide
 

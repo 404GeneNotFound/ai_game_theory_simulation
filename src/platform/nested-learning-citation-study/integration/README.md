@@ -62,6 +62,14 @@ This directory contains the **integration bridge** between the Python Nested Lea
 - Deployment instructions
 - Usage examples
 
+**`EVALUATION_BENCHMARKS_COMPLETE.md`** (11KB) - NEW!
+- Complete benchmarking documentation
+- 50+ metrics across 9 evaluation categories
+- 7 benchmark datasets (5,000+ test samples)
+- 5 baseline method comparisons
+- Example results and visualizations
+- Production deployment guide
+
 ## Architecture
 
 ```
