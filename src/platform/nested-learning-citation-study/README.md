@@ -45,14 +45,18 @@ src/platform/nested-learning-citation-study/
 - Citation-Integrity MVP: To ensure the simulation uses accurate research
 - Nested Learning Platform: To study citation behavior patterns
 
-## Python Implementation Files
+## Adding the Python Implementation
 
-✅ **All files added!** The platform now includes:
+When you have the `nested_learning_enhanced.py` file from your Opus session, place it here:
 
-- **`nested_learning_enhanced.py`** - Full implementation with all nested learning concepts
-- **`enhanced_nest_learning.py`** - Production-ready version
-- **`nest_learning_debug.py`** - Testing and debugging tools
-- **`nested_learning_results.json`** - Sample simulation results
+```bash
+# From the project root
+mv ~/Downloads/nested_learning_enhanced.py src/platform/nested-learning-citation-study/
+
+# Or any other Python files
+mv ~/Downloads/enhanced_nest_learning.py src/platform/nested-learning-citation-study/
+mv ~/Downloads/nest_learning_debug.py src/platform/nested-learning-citation-study/
+```
 
 ## Key Features (from the documentation)
 
@@ -122,75 +126,19 @@ See `docs/citations_and_integration.md` for complete academic citations includin
 - Axelrod (1984) - Evolution of Cooperation
 - And 10+ more foundational papers
 
-## Quick Start
-
-### Run the Main Simulation
+## Quick Start (Once Python files are added)
 
 ```bash
-# From project root
+# Run the simulation
+python src/platform/nested-learning-citation-study/nested_learning_enhanced.py
+
+# Or if it needs to be a module
 cd src/platform/nested-learning-citation-study
-
-# Run the enhanced implementation
-python3 nested_learning_enhanced.py
-
-# Or use the production version
-python3 enhanced_nest_learning.py
-
-# Run with debugging
-python3 nest_learning_debug.py
+python -m nested_learning_enhanced
 ```
-
-### Basic Usage Example
-
-```python
-from nested_learning_enhanced import NestedLearningSimulation, Strategy
-
-# Create simulation
-sim = NestedLearningSimulation(num_agents=20, num_generations=100)
-
-# Run simulation
-results = sim.run()
-
-# Analyze results
-print(f"Final cooperation rate: {results['cooperation_rate']}")
-print(f"Strategy distribution: {results['strategy_distribution']}")
-
-# View results
-sim.plot_results()  # If matplotlib available
-```
-
-### Sample Results
-
-See `nested_learning_results.json` for example output showing:
-- Generation-by-generation strategy evolution
-- Memory level distributions
-- Cooperation rates over time
-- Convergence metrics
 
 ## Documentation
 
-### Platform Documentation
-- **Full Theory:** `docs/citations_and_integration.md` - Complete academic citations and theory
-- **Integration Guide:** `docs/integration_guide_continued.md` - Citation platform integration
-- **Code Comparison:** `analysis/code_comparison_analysis.md` - Implementation details
-- **Branch Comparison:** `analysis/branch_comparison.md` - MVP vs Platform comparison
-
-### Main Simulation Documentation
+- **Full Theory:** `docs/citations_and_integration.md`
+- **Code Comparison:** `analysis/code_comparison_analysis.md`
 - **Main Simulation Docs:** `../../docs/wiki/README.md`
-- **Development Workflow:** `../../docs/DEVELOPMENT_WORKFLOW.md`
-
-## Testing
-
-```bash
-# Syntax check
-python3 -m py_compile nested_learning_enhanced.py
-
-# Run basic test
-python3 nested_learning_debug.py
-
-# Run full simulation (100 generations)
-python3 nested_learning_enhanced.py --generations 100 --agents 20
-
-# Compare with baseline
-python3 enhanced_nest_learning.py --compare-baseline
-```
