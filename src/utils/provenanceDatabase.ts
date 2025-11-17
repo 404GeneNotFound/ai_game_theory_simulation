@@ -62,16 +62,17 @@ export class ProvenanceDatabase {
   }
 
   /**
-   * Save provenance record
+   * Save provenance record (uses millisecond-precision timestamps)
    */
   public saveProvenance(provenance: ParameterProvenance): number {
     const stmt = this.db.prepare(`
       INSERT INTO provenance (
         parameter_name, value, level, citation, source,
-        cited_value, confidence, notes, verified_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        cited_value, confidence, notes, verified_at, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
+    const now = Date.now();
     const result = stmt.run(
       provenance.name,
       provenance.value,
@@ -81,7 +82,8 @@ export class ProvenanceDatabase {
       provenance.citedValue || null,
       provenance.confidence || null,
       provenance.notes || null,
-      provenance.lastVerified || Date.now()
+      provenance.lastVerified || now,
+      now // Explicit millisecond-precision timestamp
     );
 
     return result.lastInsertRowid as number;
@@ -107,13 +109,13 @@ export class ProvenanceDatabase {
   }
 
   /**
-   * Get all provenance records for a parameter
+   * Get all provenance records for a parameter (chronological order, oldest first)
    */
   public getProvenanceHistory(parameterName: string): ParameterProvenance[] {
     const stmt = this.db.prepare(`
       SELECT * FROM provenance
       WHERE parameter_name = ?
-      ORDER BY created_at DESC
+      ORDER BY created_at ASC
     `);
 
     const rows = stmt.all(parameterName) as any[];
@@ -137,7 +139,7 @@ export class ProvenanceDatabase {
   }
 
   /**
-   * Get statistics
+   * Get statistics (returns 0 for empty database, not NULL)
    */
   public getStats(): {
     total: number;
@@ -148,9 +150,9 @@ export class ProvenanceDatabase {
     const stmt = this.db.prepare(`
       SELECT
         COUNT(DISTINCT parameter_name) as total,
-        SUM(CASE WHEN level = 'PLACEHOLDER' THEN 1 ELSE 0 END) as placeholder,
-        SUM(CASE WHEN level = 'INFORMED' THEN 1 ELSE 0 END) as informed,
-        SUM(CASE WHEN level = 'VERIFIED' THEN 1 ELSE 0 END) as verified
+        COALESCE(SUM(CASE WHEN level = 'PLACEHOLDER' THEN 1 ELSE 0 END), 0) as placeholder,
+        COALESCE(SUM(CASE WHEN level = 'INFORMED' THEN 1 ELSE 0 END), 0) as informed,
+        COALESCE(SUM(CASE WHEN level = 'VERIFIED' THEN 1 ELSE 0 END), 0) as verified
       FROM (
         SELECT parameter_name, level
         FROM provenance
