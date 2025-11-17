@@ -6,13 +6,21 @@ A **multi-agent simulation platform** for studying citation behavior using cutti
 
 ## Files at a Glance
 
-### Python Implementation (Ready to Run)
-| File | Purpose | Lines | Key Features |
-|------|---------|-------|-------------|
-| `nested_learning_enhanced.py` | Main implementation | ~900 | Full nested learning with all concepts |
-| `enhanced_nest_learning.py` | Production version | ~750 | Optimized, production-ready |
-| `nest_learning_debug.py` | Testing tools | ~600 | Debugging, profiling, validation |
-| `nested_learning_results.json` | Sample output | - | Example simulation results |
+### Standalone Python Implementation
+| File | Purpose | Size | Key Features |
+|------|---------|------|-------------|
+| `nested_learning_enhanced.py` | Main implementation | 31KB | Full nested learning with all concepts |
+| `enhanced_nest_learning.py` | Production version | 21KB | Optimized, production-ready |
+| `nest_learning_debug.py` | Testing tools | 30KB | Debugging, profiling, validation |
+| `nested_learning_results.json` | Sample output | 39KB | Example simulation results |
+
+### TypeScript/Python Integration Bridge
+| File | Purpose | Size | Key Features |
+|------|---------|------|-------------|
+| `integration/citation_integrity_agent.py` | Production agent | 28KB | PostgreSQL, Redis, REST API integration |
+| `integration/citationAgentIntegration.ts` | TypeScript bridge | 19KB | Event-based, child process spawning |
+| `integration/COMPLETE_AGENT_DOCUMENTATION.md` | System docs | 8.8KB | Architecture, API, deployment |
+| `integration/README.md` | Integration guide | - | Setup, usage, troubleshooting |
 
 ### Documentation (Complete Theory)
 | File | Purpose | What's Inside |
@@ -132,13 +140,13 @@ class CitationStrategy(Enum):
 
 ## How to Use
 
-### 1. Basic Simulation
+### 1. Standalone Simulation
 ```bash
 cd src/platform/nested-learning-citation-study
 python3 nested_learning_enhanced.py
 ```
 
-### 2. Citation Platform
+### 2. Citation Platform (Standalone)
 ```python
 from nested_learning_enhanced import NestedLearningSimulation
 
@@ -152,6 +160,30 @@ sim = NestedLearningSimulation(
 results = sim.run()
 print(f"Proper citation rate: {results['proper_citation_rate']}")
 print(f"Plagiarism detected: {results['violations']}")
+```
+
+### 3. Integrated with TypeScript Platform
+```typescript
+import { CitationAgentBridge } from './integration/citationAgentIntegration';
+
+// Create bridge to Python agent
+const bridge = new CitationAgentBridge({
+  pythonPath: 'python3',
+  agentScript: './integration/citation_integrity_agent.py',
+  redisUrl: 'redis://localhost:6379',
+  dbConfig: { /* PostgreSQL config */ }
+});
+
+await bridge.initialize();
+
+// Evaluate citation using nested learning agent
+const result = await bridge.evaluateCitation({
+  text: "According to Smith et al. (2024)...",
+  context: { field: 'AI', pressure: 0.7 }
+});
+
+console.log(result.behavior); // PROPER_CITE, PLAGIARIZE, etc.
+console.log(result.confidence);
 ```
 
 ### 3. Marcus 2.0 Platform Engineer

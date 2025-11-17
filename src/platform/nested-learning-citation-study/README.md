@@ -45,14 +45,21 @@ src/platform/nested-learning-citation-study/
 - Citation-Integrity MVP: To ensure the simulation uses accurate research
 - Nested Learning Platform: To study citation behavior patterns
 
-## Python Implementation Files
+## Implementation Files
 
 ✅ **All files added!** The platform now includes:
 
-- **`nested_learning_enhanced.py`** - Full implementation with all nested learning concepts
-- **`enhanced_nest_learning.py`** - Production-ready version
-- **`nest_learning_debug.py`** - Testing and debugging tools
-- **`nested_learning_results.json`** - Sample simulation results
+### Standalone Python Implementation
+- **`nested_learning_enhanced.py`** (31KB) - Full implementation with all nested learning concepts
+- **`enhanced_nest_learning.py`** (21KB) - Production-ready version
+- **`nest_learning_debug.py`** (30KB) - Testing and debugging tools
+- **`nested_learning_results.json`** (39KB) - Sample simulation results
+
+### TypeScript/Python Integration Bridge
+- **`integration/citation_integrity_agent.py`** (28KB) - Production agent with DB/Redis integration
+- **`integration/citationAgentIntegration.ts`** (19KB) - TypeScript bridge for platform integration
+- **`integration/COMPLETE_AGENT_DOCUMENTATION.md`** (8.8KB) - Full integration documentation
+- **`integration/README.md`** - Integration layer guide
 
 ## Key Features (from the documentation)
 
@@ -124,7 +131,7 @@ See `docs/citations_and_integration.md` for complete academic citations includin
 
 ## Quick Start
 
-### Run the Main Simulation
+### Option 1: Standalone Simulation
 
 ```bash
 # From project root
@@ -138,6 +145,19 @@ python3 enhanced_nest_learning.py
 
 # Run with debugging
 python3 nest_learning_debug.py
+```
+
+### Option 2: Integrated with TypeScript Platform
+
+```bash
+# See integration/README.md for complete setup
+
+# Install dependencies
+pip3 install numpy redis psycopg2-binary requests
+npm install ioredis pg axios pino
+
+# Start the integrated system
+npm run agent:bridge
 ```
 
 ### Basic Usage Example
@@ -172,6 +192,8 @@ See `nested_learning_results.json` for example output showing:
 ### Platform Documentation
 - **Full Theory:** `docs/citations_and_integration.md` - Complete academic citations and theory
 - **Integration Guide:** `docs/integration_guide_continued.md` - Citation platform integration
+- **TypeScript Integration:** `integration/README.md` - Production integration with TypeScript platform
+- **Complete Agent Docs:** `integration/COMPLETE_AGENT_DOCUMENTATION.md` - Full system architecture
 - **Code Comparison:** `analysis/code_comparison_analysis.md` - Implementation details
 - **Branch Comparison:** `analysis/branch_comparison.md` - MVP vs Platform comparison
 
