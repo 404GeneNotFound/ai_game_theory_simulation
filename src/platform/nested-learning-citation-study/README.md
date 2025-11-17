@@ -58,6 +58,7 @@ src/platform/nested-learning-citation-study/
 ### TypeScript/Python Integration Bridge
 - **`integration/citation_integrity_agent.py`** (28KB) - Production agent with DB/Redis integration
 - **`integration/citationAgentIntegration.ts`** (19KB) - TypeScript bridge for platform integration
+- **`integration/citation_evaluation_benchmarks.py`** (54KB) - Comprehensive benchmarking suite
 - **`integration/COMPLETE_AGENT_DOCUMENTATION.md`** (8.8KB) - Full integration documentation
 - **`integration/README.md`** - Integration layer guide
 
@@ -203,6 +204,7 @@ See `nested_learning_results.json` for example output showing:
 
 ## Testing
 
+### Basic Testing
 ```bash
 # Syntax check
 python3 -m py_compile nested_learning_enhanced.py
@@ -216,3 +218,29 @@ python3 nested_learning_enhanced.py --generations 100 --agents 20
 # Compare with baseline
 python3 enhanced_nest_learning.py --compare-baseline
 ```
+
+### Comprehensive Benchmarking
+```bash
+cd integration
+
+# Install benchmark dependencies
+pip3 install pandas matplotlib seaborn scikit-learn
+
+# Run full benchmark suite
+python3 citation_evaluation_benchmarks.py
+
+# Compare against baselines (Random Forest, SVM, Neural Net)
+python3 citation_evaluation_benchmarks.py --baseline-comparison
+
+# Performance profiling (latency, throughput)
+python3 citation_evaluation_benchmarks.py --performance-profile
+
+# Cross-validation (K-fold)
+python3 citation_evaluation_benchmarks.py --cross-validation
+```
+
+**Benchmark Output:**
+- JSON results with all metrics
+- HTML reports with visualizations
+- Comparison charts (Nested Learning vs baselines)
+- Performance profiles (latency distributions, throughput)

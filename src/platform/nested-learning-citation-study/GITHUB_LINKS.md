@@ -39,6 +39,9 @@ https://github.com/404GeneNotFound/ai_game_theory_simulation/blob/feature/nested
 **TypeScript Bridge**
 https://github.com/404GeneNotFound/ai_game_theory_simulation/blob/feature/nested-learning-citation-platform/src/platform/nested-learning-citation-study/integration/citationAgentIntegration.ts
 
+**Benchmarking & Evaluation Suite**
+https://github.com/404GeneNotFound/ai_game_theory_simulation/blob/feature/nested-learning-citation-platform/src/platform/nested-learning-citation-study/integration/citation_evaluation_benchmarks.py
+
 **Complete System Documentation**
 https://github.com/404GeneNotFound/ai_game_theory_simulation/blob/feature/nested-learning-citation-platform/src/platform/nested-learning-citation-study/integration/COMPLETE_AGENT_DOCUMENTATION.md
 
