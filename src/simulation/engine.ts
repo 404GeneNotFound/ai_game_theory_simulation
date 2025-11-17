@@ -154,8 +154,8 @@ import {
   TechnologyDiffusionPhase,
   // CatastrophicScenariosPhase removed - merged into ExtinctionSystemPhase (Batch 4, Nov 9, 2025)
   EventCollectionPhase,
-  TimeAdvancementPhase,
-  TechDeploymentSchedulePhase  // Nov 25, 2025: Sequenced tech deployment
+  ProvenanceValidationPhase,  // Week 3-4 (Nov 17, 2025): Citation integrity & parameter drift detection
+  TimeAdvancementPhase
 } from './engine/phases';
 // TIER 2 Interventions (Oct 27, 2025)
 // TIER 2 Consolidated Phases (Batch 1 consolidation: 9 → 3, Nov 9, 2025)
@@ -642,6 +642,7 @@ export class SimulationEngine {
     // ExtinctionTriggersPhase + ExtinctionProgressPhase + CatastrophicScenariosPhase removed - merged into ExtinctionSystemPhase (Batch 4, Nov 9, 2025)
     this.orchestrator.registerPhase(new TechnologyDiffusionPhase());
     this.orchestrator.registerPhase(new EventCollectionPhase());
+    this.orchestrator.registerPhase(new ProvenanceValidationPhase());  // Week 3-4 (Nov 17, 2025): Citation integrity & drift detection
     this.orchestrator.registerPhase(new TimeAdvancementPhase());
     this.orchestrator.registerPhase(new TechDeploymentSchedulePhase());  // Nov 25, 2025: Sequenced tech deployment
 

@@ -1066,4 +1066,26 @@ export interface GameState {
   previousQoL?: number; // Previous month's QoL for trend calculation (initialized in globalMetrics)
   previousAICapability?: number; // Previous month's average AI capability
   previousMisalignedCount?: number; // Previous month's misaligned AI count
+
+  /**
+   * Provenance Tracking System (Week 3-4, Nov 17 2025)
+   *
+   * Tracks citations and research backing for simulation parameters.
+   * Prevents parameter drift from verified values and maintains research integrity.
+   *
+   * Three-level hierarchy (Nested Learning):
+   * - PLACEHOLDER: Engineering guess, needs verification
+   * - INFORMED: Research-backed estimate
+   * - VERIFIED: Peer-reviewed citation with drift monitoring
+   *
+   * LSS (Local Surprise Signal): drift = |current - cited| / cited
+   * - Warning threshold: 20% drift
+   * - Alert threshold: 50% drift
+   *
+   * Research: Behrouz et al. (2025) Nested Learning, Richardson et al. (2023) planetary boundaries
+   * Implementation: src/utils/citationVerifier.ts, src/utils/provenanceDatabase.ts
+   *
+   * @see tests/benchmarks/nested_learning_evaluation.md
+   */
+  provenanceRegistry?: Record<string, import('../types/provenance').ParameterProvenance>;
 }

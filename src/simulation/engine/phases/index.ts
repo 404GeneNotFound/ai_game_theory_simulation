@@ -134,6 +134,7 @@ export { CriticalJuncturePhase } from './CriticalJuncturePhase';  // Contingency
 export { TechnologyDiffusionPhase } from './TechnologyDiffusionPhase';
 export { CatastrophicScenariosPhase } from './CatastrophicScenariosPhase';
 export { EventCollectionPhase } from './EventCollectionPhase';
+export { ProvenanceValidationPhase } from './ProvenanceValidationPhase';  // Week 3-4 (Nov 17, 2025): Citation integrity & drift detection
 export { TimeAdvancementPhase } from './TimeAdvancementPhase';
 export { TechDeploymentSchedulePhase } from './TechDeploymentSchedulePhase';  // Nov 25, 2025: Sequenced tech deployment
 

@@ -1329,10 +1329,10 @@ export function createDefaultInitialState(
       cooperativeOwnershipEvents: []
     },
 
-    // Initial population for mortality calculations (Nov 21, 2025)
-    // Used by endGame.ts to calculate mortality bands
-    // Research: UN World Population Prospects 2024 Revision (8.1B)
-    initialPopulation: 8.0  // 8.0 billion baseline (matches global population)
+    // Provenance Tracking System (Week 3-4, Nov 17 2025)
+    // Citation integrity & parameter verification
+    // Research: Behrouz et al. (2025) Nested Learning, Richardson et al. (2023) planetary boundaries
+    provenanceRegistry: {} as Record<string, import('../types/provenance').ParameterProvenance>
   };
   
   // Phase 2: Initialize and link organizations
