@@ -56,6 +56,7 @@ describe('MVP-PHASE-001: ProvenanceValidationPhase', () => {
   test('Detects PLACEHOLDER parameters (Month 12)', () => {
     // Clear registry
     state.provenanceRegistry = {};
+    state.currentMonth = 12;
 
     registerParameter(state, {
       name: 'placeholder_param',
@@ -77,6 +78,7 @@ describe('MVP-PHASE-001: ProvenanceValidationPhase', () => {
   test('Detects drift in VERIFIED parameters (Month 12)', () => {
     // Clear registry
     state.provenanceRegistry = {};
+    state.currentMonth = 12;
 
     registerParameter(state, {
       name: 'drifted_param',
@@ -100,6 +102,8 @@ describe('MVP-PHASE-001: ProvenanceValidationPhase', () => {
   test('Does not run on non-yearly months (Month 6)', () => {
     // Clear registry
     state.provenanceRegistry = {};
+    // CRITICAL FIX: Set state.currentMonth (phase reads from state, not context)
+    state.currentMonth = 6;
 
     registerParameter(state, {
       name: 'param',
@@ -119,6 +123,7 @@ describe('MVP-PHASE-001: ProvenanceValidationPhase', () => {
   test('Runs on Month 0 (game start)', () => {
     // Clear registry
     state.provenanceRegistry = {};
+    state.currentMonth = 0;
 
     registerParameter(state, {
       name: 'param',
@@ -138,6 +143,7 @@ describe('MVP-PHASE-001: ProvenanceValidationPhase', () => {
   test('Runs on Month 24 (2 years)', () => {
     // Clear registry
     state.provenanceRegistry = {};
+    state.currentMonth = 24;
 
     registerParameter(state, {
       name: 'param',
@@ -157,6 +163,7 @@ describe('MVP-PHASE-001: ProvenanceValidationPhase', () => {
   test('Multiple PLACEHOLDER parameters detected', () => {
     // Clear registry
     state.provenanceRegistry = {};
+    state.currentMonth = 12;
 
     registerParameter(state, { name: 'p1', value: 1, level: 'PLACEHOLDER' });
     registerParameter(state, { name: 'p2', value: 2, level: 'PLACEHOLDER' });
@@ -175,6 +182,7 @@ describe('MVP-PHASE-001: ProvenanceValidationPhase', () => {
   test('Ignores INFORMED parameters (no drift)', () => {
     // Clear registry
     state.provenanceRegistry = {};
+    state.currentMonth = 12;
 
     registerParameter(state, {
       name: 'informed_param',
@@ -196,6 +204,7 @@ describe('MVP-PHASE-001: ProvenanceValidationPhase', () => {
   test('VERIFIED parameter with no drift', () => {
     // Clear registry
     state.provenanceRegistry = {};
+    state.currentMonth = 12;
 
     registerParameter(state, {
       name: 'no_drift_param',
@@ -218,6 +227,7 @@ describe('MVP-PHASE-001: ProvenanceValidationPhase', () => {
   test('VERIFIED parameter with acceptable drift (10%)', () => {
     // Clear registry
     state.provenanceRegistry = {};
+    state.currentMonth = 12;
 
     registerParameter(state, {
       name: 'small_drift_param',
@@ -240,6 +250,7 @@ describe('MVP-PHASE-001: ProvenanceValidationPhase', () => {
   test('Empty registry generates no events', () => {
     // Clear registry
     state.provenanceRegistry = {};
+    state.currentMonth = 12;
 
     const result = phase.execute(state, rng, {
       month: 12,
@@ -253,6 +264,7 @@ describe('MVP-PHASE-001: ProvenanceValidationPhase', () => {
   test('Mixed parameters: VERIFIED, INFORMED, PLACEHOLDER', () => {
     // Clear registry
     state.provenanceRegistry = {};
+    state.currentMonth = 12;
 
     registerParameter(state, {
       name: 'verified_ok',
