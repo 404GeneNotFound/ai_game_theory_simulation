@@ -7,7 +7,7 @@ This document compares the original Citation Integrity Platform code from your a
 ## Key Architectural Differences
 
 ### Original Implementation (Archived)
-Based on the branch structure `claude/archive-cleanup-01Co9tCex22fX79NQVoLhXsb`:
+Based on the branch structure `feature/citation-platform`:
 
 1. **Traditional Game Theory Approach**
    - Single-level agent decision making

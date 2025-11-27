@@ -11,7 +11,7 @@
 
 ### 1. Integration with Citation Integrity MVP
 
-**Branch Reference:** `claude/citation-integrity-mvp-0131dmgaZK6S4Qvsaj7ZzbhE`
+**Branch Reference:** `feature/citation-platform`
 
 **What Was Built:**
 - Citation verification tools (`citationChecker.py`, `autoSearchCitations.py`)
@@ -259,7 +259,7 @@ Looking at Citation Integrity MVP development (6 weeks for production system wit
 1. ✅ Clone Citation MVP branch locally
 2. ✅ Extract citation patterns from project history
    ```bash
-   git checkout claude/citation-integrity-mvp-0131dmgaZK6S4Qvsaj7ZzbhE
+   git checkout feature/citation-platform
    python scripts/extract_citation_mvp_data.py > baseline_data.json
    ```
 3. ✅ Analyze actual behavior:

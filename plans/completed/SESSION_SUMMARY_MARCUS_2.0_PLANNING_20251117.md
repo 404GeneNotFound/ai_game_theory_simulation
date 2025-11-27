@@ -1,7 +1,7 @@
 # Session Summary: Marcus 2.0 Planning & Nested Learning Validation
 **Date:** November 17, 2025
 **Session Focus:** Research platform planning, nested learning validation, agent design
-**Branch:** `claude/nested-learning-platform-01CAsukqDMGiP6RTHyc4xYWV`
+**Branch:** `feature/citation-platform`
 
 ---
 
@@ -77,7 +77,7 @@
 
 ### 3. Key Discovery: MARCUS 3.0 Already Exists
 
-**Finding:** The `feature/nested-learning-citation-platform` branch contains references to "MARCUS 3.0"
+**Finding:** The `feature/citation-platform` branch contains references to "MARCUS 3.0"
 
 **Implications:**
 - Existing platform may have advanced beyond Marcus 2.0 concept
@@ -85,7 +85,7 @@
 - Potential for merging learnings from both branches
 
 **Action Required:**
-- Before starting Week 1 implementation, review `feature/nested-learning-citation-platform` branch
+- Before starting Week 1 implementation, review `feature/citation-platform` branch
 - Identify what MARCUS 3.0 includes
 - Determine if Marcus 2.0 plan should be updated or if MARCUS 3.0 subsumes it
 
@@ -270,7 +270,7 @@ Five-tier strategy space modeling real engineering behavior:
 
 ### Immediate (Before Week 1 Implementation)
 
-1. **Review `feature/nested-learning-citation-platform` branch**
+1. **Review `feature/citation-platform` branch**
    - Understand MARCUS 3.0 scope
    - Identify overlap with Marcus 2.0 plan
    - Decide: merge, update, or proceed independently
@@ -288,7 +288,7 @@ cp src/platform/nested-learning-citation-study/nested_learning_enhanced.py \
    src/platform/marcus-2.0/
 
 # Copy citation checker from MVP branch
-git show claude/citation-integrity-mvp-0131dmgaZK6S4Qvsaj7ZzbhE:scripts/citationChecker.py \
+git show feature/citation-platform:scripts/citationChecker.py \
    > src/platform/marcus-2.0/citation_checker.py
 
 # Start building

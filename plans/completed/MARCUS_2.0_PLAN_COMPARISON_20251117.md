@@ -391,7 +391,7 @@ Week 10 ─┘   Document Learnings ──────┘
 2. **Approve refined plan**
 3. **Begin Week 1:**
    ```bash
-   git checkout claude/citation-integrity-mvp-0131dmgaZK6S4Qvsaj7ZzbhE
+   git checkout feature/citation-platform
    python scripts/extract_citation_mvp_data.py > baseline_data.json
    ```
 

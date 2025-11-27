@@ -60,9 +60,9 @@
   - **Citation Quality Gate:** Integrates Citation MVP's `citationChecker.py` to validate research citations (prevents hallucinated data in model)
   - **Timeline:** 5-week implementation plan (Phase 1: Core framework, Phase 2: Context pheromones, Phase 3: Knowledge transfer, Phase 4: Debt metrics, Phase 5: Agent integration)
   - **Plan Location:** `/plans/MARCUS_2.0_FINAL_PLAN.md` (482 lines, ready for implementation)
-  - **Branch Work:** `claude/nested-learning-platform-01CAsukqDMGiP6RTHyc4xYWV` (test results committed)
+  - **Branch Work:** `feature/citation-platform` (test results committed)
   - **Archived Plans:** 4 intermediate iterations → `/plans/completed/MARCUS_2.0_*_20251117.md`
-  - **Discovery:** `feature/nested-learning-citation-platform` branch already contains MARCUS 3.0 reference
+  - **Discovery:** `feature/citation-platform` branch already contains MARCUS 3.0 reference
   - **Status:** ✅ Planning COMPLETE, ready for Week 1 implementation (core framework adaptation)
 
 **Recent Completions (Nov 15, 2025):**

@@ -1,28 +1,4 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/check-dangerous-command.sh \"$TOOL_INPUT\""
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "WebFetch",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"$TOOL_OUTPUT\" | .claude/hooks/citation-check.sh"
-          }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
       "Bash(1)",
@@ -180,7 +156,8 @@
       "mcp__agent-memory__recall_context",
       "mcp__agent-memory__add_core_memory",
       "mcp__agent-memory__add_recent_task",
-      "mcp__agent-memory__add_recent_learning"
+      "mcp__agent-memory__add_recent_learning",
+      "Bash({} ;)"
     ],
     "deny": [],
     "ask": [],
@@ -197,5 +174,29 @@
     "playwright",
     "zotero",
     "matrix"
-  ]
+  ],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/check-dangerous-command.sh \"$TOOL_INPUT\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$TOOL_OUTPUT\" | .claude/hooks/citation-check.sh"
+          }
+        ]
+      }
+    ]
+  }
 }

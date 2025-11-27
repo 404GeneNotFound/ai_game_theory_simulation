@@ -1,6 +1,6 @@
 # PR Summary: Archive Case Study NL Platform-Engineer & Cleanup and Fork Sync
 
-**Branch:** `claude/archive-cleanup-01Co9tCex22fX79NQVoLhXsb`
+**Branch:** `feature/citation-platform`
 **Date:** November 17, 2025
 **Type:** Documentation cleanup
 **Status:** ✅ Ready for review
@@ -114,7 +114,7 @@ cat src/platform/lss/lssMonitor.ts
 cat src/platform/state/multiLevelManager.ts
 
 # Return to this branch
-git checkout claude/archive-cleanup-01Co9tCex22fX79NQVoLhXsb
+git checkout feature/citation-platform
 ```
 
 ---

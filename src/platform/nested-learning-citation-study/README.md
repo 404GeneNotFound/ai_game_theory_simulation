@@ -29,7 +29,7 @@ src/platform/nested-learning-citation-study/
 
 ## Distinction from Citation-Integrity MVP
 
-**IMPORTANT:** This is NOT the same as the `claude/citation-integrity-mvp-0131dmgaZK6S4Qvsaj7ZzbhE` branch.
+**IMPORTANT:** This is NOT the same as the `feature/citation-platform` branch.
 
 ### Citation-Integrity MVP Branch
 - **Purpose:** Verifies citations in the simulation's own research documentation

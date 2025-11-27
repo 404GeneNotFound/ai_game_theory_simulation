@@ -2,7 +2,7 @@
 
 ## TL;DR: You Need Both
 
-**Short Answer:** YES, you still need the `claude/citation-integrity-mvp-0131dmgaZK6S4Qvsaj7ZzbhE` branch. It serves a completely different purpose than the Nested Learning platform.
+**Short Answer:** YES, you still need the `feature/citation-platform` branch. It serves a completely different purpose than the Nested Learning platform.
 
 ## Side-by-Side Comparison
 
@@ -207,7 +207,7 @@ class EngineeringCreditStrategy(Enum):
 ### 1. Merge Citation-Integrity MVP (Now)
 ```bash
 git checkout main
-git merge origin/claude/citation-integrity-mvp-0131dmgaZK6S4Qvsaj7ZzbhE
+git merge origin/feature/citation-platform
 # Resolve any conflicts
 git push
 ```

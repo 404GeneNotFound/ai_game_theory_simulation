@@ -465,7 +465,7 @@ Research Papers → citationChecker.py validates → Verified Parameters
       src/platform/marcus-2.0/
 
    # Copy citation checker from MVP (just the tool)
-   git show claude/citation-integrity-mvp-0131dmgaZK6S4Qvsaj7ZzbhE:scripts/citationChecker.py \
+   git show feature/citation-platform:scripts/citationChecker.py \
       > src/platform/marcus-2.0/citation_checker.py
 
    # Start building
