@@ -338,7 +338,8 @@
       "Bash(/home/g7throwawayplz/ai_game_theory_simulation/scripts/gcp/cluster-power.sh:*)",
       "Bash(/home/g7throwawayplz/ai_game_theory_simulation/scripts/gcp/test-cluster-power.sh:*)",
       "Bash(./scripts/gcp/test-cluster-power.sh:*)",
-      "Bash(./scripts/gcp/cluster-power.sh:*)"
+      "Bash(./scripts/gcp/cluster-power.sh:*)",
+      "Bash(gh auth login:*)"
     ],
     "deny": [],
     "ask": [],
