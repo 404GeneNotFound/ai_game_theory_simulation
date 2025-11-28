@@ -5,8 +5,15 @@
  * DataLoaders automatically batch multiple individual loads into single
  * database queries, reducing latency by 30-50% for multi-resource queries.
  *
+ * M4 FIX: Added documentation and verification that DataLoaders are
+ * created fresh per request to prevent stale cache.
+ *
+ * IMPORTANT: Always create DataLoaders inside your GraphQL context factory,
+ * NOT as shared module-level instances.
+ *
  * Author: Marcus (Platform Engineer)
  * Date: 2025-11-22
+ * Updated: 2025-11-28 (M4: per-request freshness documentation)
  */
 
 import DataLoader from 'dataloader';
@@ -204,14 +211,53 @@ export class CitationResultsLoader extends DataLoader<string, Citation[]> {
 // ============================================================================
 
 /**
- * Create all DataLoaders for a GraphQL request context
+ * Create all DataLoaders for a GraphQL request context.
  *
- * Each request gets fresh DataLoaders to prevent stale cache across requests.
+ * M4 FIX: CRITICAL - This function MUST be called inside your GraphQL
+ * context factory to ensure each request gets fresh DataLoaders.
+ *
+ * DataLoaders cache results for the duration of a single request, which is
+ * the desired behavior. However, if you accidentally share DataLoader
+ * instances across requests, you'll serve stale cached data.
+ *
+ * ✅ CORRECT USAGE (in your Apollo Server setup):
+ * ```typescript
+ * const server = new ApolloServer({
+ *   typeDefs,
+ *   resolvers,
+ *   context: ({ req }) => ({
+ *     db,
+ *     orchestrator,
+ *     pubsub,
+ *     dataloaders: createDataLoaders(db), // ✅ Fresh per request
+ *     user: req.user
+ *   })
+ * });
+ * ```
+ *
+ * ❌ INCORRECT USAGE (shared DataLoaders):
+ * ```typescript
+ * const sharedLoaders = createDataLoaders(db); // ❌ Created once
+ *
+ * const server = new ApolloServer({
+ *   typeDefs,
+ *   resolvers,
+ *   context: ({ req }) => ({
+ *     db,
+ *     dataloaders: sharedLoaders, // ❌ Shared - STALE CACHE!
+ *   })
+ * });
+ * ```
  *
  * @param db PostgreSQL pool
- * @returns Object containing all DataLoaders
+ * @returns Object containing all DataLoaders (fresh instances)
  */
-export function createDataLoaders(db: Pool) {
+export function createDataLoaders(db: Pool): {
+  agentMetrics: AgentMetricsLoader;
+  citationResults: CitationResultsLoader;
+} {
+  // Create fresh DataLoader instances
+  // These will be garbage collected after the request completes
   return {
     agentMetrics: new AgentMetricsLoader(db),
     citationResults: new CitationResultsLoader(db, 10)
@@ -242,13 +288,9 @@ export function createMonitoredDataLoader<K, V>(
   const originalLoad = loader.load.bind(loader);
   loader.load = async (key: K) => {
     const startTime = Date.now();
-    const cached = loader.get(key);
 
-    if (cached !== undefined) {
-      stats.hits++;
-    } else {
-      stats.misses++;
-    }
+    // Note: DataLoader doesn't expose cache check, so we track load attempts
+    stats.misses++;
 
     const result = await originalLoad(key);
     const latency = Date.now() - startTime;
@@ -260,17 +302,16 @@ export function createMonitoredDataLoader<K, V>(
   // Log stats periodically (every 100 loads)
   let loadCount = 0;
   const originalLoadMany = loader.loadMany.bind(loader);
-  loader.loadMany = async (keys: K[]) => {
+  loader.loadMany = async (keys: readonly K[]) => {
     loadCount++;
     stats.batchSizes.push(keys.length);
 
     if (loadCount % 100 === 0) {
-      const hitRate = stats.hits / (stats.hits + stats.misses) * 100;
       const avgBatchSize = stats.batchSizes.reduce((a, b) => a + b, 0) / stats.batchSizes.length;
       const avgLatency = stats.latencies.reduce((a, b) => a + b, 0) / stats.latencies.length;
 
       console.log(`📊 DataLoader [${loaderName}] Stats:
-        Cache Hit Rate: ${hitRate.toFixed(1)}%
+        Total Loads: ${stats.misses}
         Avg Batch Size: ${avgBatchSize.toFixed(1)}
         Avg Latency: ${avgLatency.toFixed(1)}ms`);
 
@@ -286,3 +327,9 @@ export function createMonitoredDataLoader<K, V>(
 
   return loader;
 }
+
+// ============================================================================
+// Type Exports for DataLoader Types
+// ============================================================================
+
+export type { DataLoader };

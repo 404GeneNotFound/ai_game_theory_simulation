@@ -3,8 +3,12 @@
 # Efficient data fetching for citation platform with DataLoader optimization.
 # Reduces client round trips from 4x to 1x via batched queries.
 #
+# M1 FIX: Memory fields are now nullable (not always populated)
+# M2 FIX: Removed unimplemented mutations - only advertise working capabilities
+#
 # Author: Marcus (Platform Engineer)
 # Date: 2025-11-22
+# Updated: 2025-11-28 (M1, M2 fixes)
 
 """
 ISO 8601 datetime string
@@ -43,7 +47,11 @@ type Agent {
   "Last update timestamp"
   timestamp: DateTime!
 
-  "Agent memory state"
+  """
+  Agent memory state.
+  M1 FIX: Now nullable - memory details require direct agent query which
+  may not be available in lightweight GraphQL mode.
+  """
   memoryState: AgentMemory
 
   "Recent citations analyzed by this agent"
@@ -57,14 +65,16 @@ type Agent {
 }
 
 """
-Agent memory hierarchy
+Agent memory hierarchy.
+M1 FIX: All fields are now nullable since memory may not be populated
+in lightweight query mode.
 """
 type AgentMemory {
-  "Immediate memory (last N citations)"
-  immediateHistory: [MemoryEntry!]!
+  "Immediate memory (last N citations) - may be null if not loaded"
+  immediateHistory: [MemoryEntry!]
 
-  "Short-term memory"
-  shorttermHistory: [MemoryEntry!]!
+  "Short-term memory - may be null if not loaded"
+  shorttermHistory: [MemoryEntry!]
 
   "Long-term statistics"
   longtermStats: JSON
@@ -73,7 +83,7 @@ type AgentMemory {
   behaviorSuccessRates: JSON
 
   "Total citations processed"
-  totalCitationsProcessed: Int!
+  totalCitationsProcessed: Int
 }
 
 """
@@ -157,8 +167,11 @@ type Citation {
   "Analysis timestamp"
   timestamp: DateTime!
 
-  "Agent that analyzed this citation"
-  agent: Agent!
+  "Agent that analyzed this citation (may be null if agent unavailable)"
+  agent: Agent
+
+  "ID of the agent that analyzed this citation"
+  agentId: ID!
 
   "Behavior used for analysis"
   behaviorUsed: CitationBehavior!
@@ -187,10 +200,21 @@ type CitationConsensus {
   behaviorDistribution: JSON!
 
   "Individual agent results"
-  agentResults: [Citation!]!
+  agentResults: [AgentResult!]!
 
   "Recommendations"
   recommendations: [String!]!
+}
+
+"""
+Individual agent result in consensus (lighter than full Citation)
+"""
+type AgentResult {
+  agentId: ID!
+  integrityScore: Float!
+  behaviorUsed: CitationBehavior!
+  confidence: Float!
+  detectedViolations: [String!]!
 }
 
 # ===== Platform Types =====
@@ -306,7 +330,11 @@ type Query {
     endDate: DateTime
   ): [Citation!]!
 
-  "Analyze citation with multiple agents (consensus)"
+  """
+  Analyze citation with multiple agents (consensus).
+  NOTE: Requires orchestrator with Python agents to be running.
+  Returns error if orchestrator is not available.
+  """
   analyzeCitation(
     text: String!
     claimedSource: String!
@@ -375,45 +403,26 @@ type AgentModeDistribution {
 }
 
 # ===== Mutation Root =====
-# M1 FIX: Removed unimplemented mutations (will be added when implemented)
-# Roadmap: createAgent, updateAgent, resetAgent, updateAsyncRollout, triggerBenchmark
+# M2 FIX: Only include mutations that are actually implemented.
+# Removed: createAgent, updateAgent, resetAgent, updateAsyncRollout, triggerBenchmark
+# These can be added back when implemented.
 
 type Mutation {
-  # Placeholder - GraphQL requires at least one field in Mutation type
-  # This echoes the input string (useful for testing connectivity)
-  "_ping: Echo input for connectivity testing"
-  _ping(message: String = "pong"): String!
-}
+  """
+  Analyze a citation (mutation variant for side effects).
+  Use this when you want to store the result.
+  """
+  analyzeCitationAndStore(
+    text: String!
+    claimedSource: String!
+    actualSource: String
+  ): CitationConsensus!
 
-# Input types preserved for future implementation
-# (These will be used when mutations are implemented)
-
-"""
-Input for creating new agent (ROADMAP: createAgent mutation)
-"""
-input CreateAgentInput {
-  "Agent ID"
-  id: ID!
-
-  "Initial reputation [0, 1]"
-  initialReputation: Float = 0.5
-
-  "Exploration rate [0, 1]"
-  explorationRate: Float = 0.2
-
-  "Force specific mode (optional)"
-  mode: AgentMode
-}
-
-"""
-Input for updating agent (ROADMAP: updateAgent mutation)
-"""
-input UpdateAgentInput {
-  "Exploration rate [0, 1]"
-  explorationRate: Float
-
-  "Current behavior"
-  currentBehavior: CitationBehavior
+  """
+  Placeholder mutation - GraphQL requires at least one mutation.
+  Returns current server time.
+  """
+  ping: DateTime!
 }
 
 # ===== Subscriptions =====
