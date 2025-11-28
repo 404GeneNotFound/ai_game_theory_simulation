@@ -21,7 +21,8 @@ Updated: 2025-11-28 (H3 fix: explicit exit after cleanup)
 
 import json
 import logging
-import random
+import os
+import random  # Used only for exploration behavior selection, NOT for analysis results
 import time
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
@@ -29,7 +30,7 @@ from enum import Enum
 from typing import Dict, List, Optional, Tuple, Any
 from pathlib import Path
 
-# External dependencies (install via: pip install psycopg2-binary redis numpy)
+# External dependencies (install via: pip install psycopg2-binary redis numpy anthropic)
 try:
     import psycopg2
     from psycopg2.extras import RealDictCursor
@@ -40,6 +41,14 @@ except ImportError as e:
         f"Missing required dependencies: {e}. "
         "Install with: pip install psycopg2-binary redis numpy"
     )
+
+# Anthropic Claude API for LLM-based citation verification
+try:
+    import anthropic
+    ANTHROPIC_AVAILABLE = True
+except ImportError:
+    ANTHROPIC_AVAILABLE = False
+    logging.warning("anthropic package not installed. Install with: pip install anthropic")
 
 # Configure logging
 logging.basicConfig(
@@ -447,10 +456,10 @@ class CitationIntegrityAgent:
 
     def analyze_citation(self, document: CitationDocument) -> CitationAnalysisResult:
         """
-        Analyze a citation for integrity.
+        Analyze a citation for integrity using Claude LLM.
 
-        This is a simplified analysis for demonstration. In production,
-        this would use NLP models, database lookups, etc.
+        Uses Anthropic's Claude API to verify if a citation is accurate,
+        check if the claimed source exists, and detect potential fabrications.
 
         Args:
             document: CitationDocument to analyze
@@ -459,47 +468,222 @@ class CitationIntegrityAgent:
             CitationAnalysisResult with integrity assessment
         """
         behavior = self.current_behavior
-        base_integrity = behavior.get_base_integrity()
 
-        # Simulate analysis based on behavior
-        # In production: use actual citation verification logic
-        violations = []
+        # Try LLM-based analysis first
+        api_key = os.environ.get('ANTHROPIC_API_KEY')
 
-        if behavior == CitationBehavior.ALWAYS_ACCEPT:
-            integrity = 0.0
-        elif behavior == CitationBehavior.ALWAYS_REJECT:
-            integrity = 1.0
-            violations.append("Rejected by strict policy")
-        else:
-            # Simplified heuristic
-            text_lower = document.text.lower()
-            claimed_lower = document.claimed_source.lower()
+        if ANTHROPIC_AVAILABLE and api_key:
+            try:
+                result = self._analyze_with_claude(document, behavior)
+                self.total_citations += 1
+                return result
+            except Exception as e:
+                logger.warning(f"Claude API error, falling back to heuristics: {e}")
 
-            # Check for common issues
-            if "et al" in claimed_lower and "et al" not in text_lower:
-                violations.append("Missing 'et al' in citation")
+        # Fallback to heuristic analysis (no random noise)
+        return self._analyze_with_heuristics(document, behavior)
 
-            # Base integrity with some noise
-            integrity = base_integrity + random.gauss(0, 0.1)
-            integrity = max(0.0, min(1.0, integrity))
+    def _analyze_with_claude(
+        self,
+        document: CitationDocument,
+        behavior: CitationBehavior
+    ) -> CitationAnalysisResult:
+        """
+        Use Claude to verify citation integrity.
 
-        # Confidence based on behavior and memory
-        confidence = 0.5 + (self.memory.total_citations_processed / 1000) * 0.3
-        confidence = min(1.0, confidence)
+        Args:
+            document: Citation to verify
+            behavior: Agent's analysis behavior/personality
+
+        Returns:
+            CitationAnalysisResult from Claude's analysis
+        """
+        client = anthropic.Anthropic()
+
+        # Craft the verification prompt based on agent behavior
+        behavior_instructions = {
+            CitationBehavior.STRICT_MATCH: "Be very strict. Flag any discrepancies, missing details, or unverifiable claims.",
+            CitationBehavior.MODERATE_CHECK: "Be balanced. Check for major issues but allow minor formatting differences.",
+            CitationBehavior.LENIENT_SIMILARITY: "Be lenient. Only flag obvious fabrications or major factual errors.",
+            CitationBehavior.AUTHOR_FOCUSED: "Focus primarily on verifying the author names and affiliations.",
+            CitationBehavior.YEAR_FOCUSED: "Focus primarily on verifying the publication year and timeline accuracy.",
+            CitationBehavior.TITLE_FOCUSED: "Focus primarily on verifying the work title and publication venue.",
+            CitationBehavior.COMBINED_HEURISTIC: "Apply comprehensive analysis checking authors, year, title, and factual claims.",
+            CitationBehavior.ALWAYS_ACCEPT: "Be extremely lenient, only flag blatant fabrications.",
+            CitationBehavior.ALWAYS_REJECT: "Be extremely skeptical, require strong evidence for any claim.",
+        }
+
+        instruction = behavior_instructions.get(behavior, behavior_instructions[CitationBehavior.MODERATE_CHECK])
+
+        prompt = f"""You are a citation integrity verification agent. Analyze this citation and determine if it is accurate and verifiable.
+
+CITATION TEXT:
+"{document.text}"
+
+CLAIMED SOURCE:
+"{document.claimed_source}"
+
+ANALYSIS INSTRUCTIONS:
+{instruction}
+
+Respond with a JSON object containing:
+{{
+    "integrity_score": <float 0.0-1.0, where 1.0 means completely accurate/verifiable>,
+    "confidence": <float 0.0-1.0, your confidence in this assessment>,
+    "is_verifiable": <boolean, can this citation be verified?>,
+    "likely_accurate": <boolean, does this appear to be a real/accurate citation?>,
+    "violations": [<list of specific issues found, empty if none>],
+    "reasoning": "<brief explanation of your assessment>"
+}}
+
+Focus on:
+1. Does the claimed source appear to exist (real publication, author, etc.)?
+2. Does the citation text accurately represent what the source likely says?
+3. Are there any red flags suggesting fabrication (impossible claims, non-existent authors, etc.)?
+4. Is the formatting and attribution appropriate?
+
+Respond ONLY with the JSON object, no other text."""
+
+        message = client.messages.create(
+            model="claude-sonnet-4-20250514",
+            max_tokens=1024,
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
+        )
+
+        # Parse Claude's response
+        response_text = message.content[0].text.strip()
+
+        # Handle potential JSON wrapped in code blocks
+        if response_text.startswith('```'):
+            response_text = response_text.split('```')[1]
+            if response_text.startswith('json'):
+                response_text = response_text[4:]
+
+        try:
+            analysis = json.loads(response_text)
+        except json.JSONDecodeError:
+            # Try to extract JSON from the response
+            import re
+            json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+            if json_match:
+                analysis = json.loads(json_match.group())
+            else:
+                raise ValueError(f"Could not parse Claude response: {response_text}")
+
+        # Build result
+        integrity_score = float(analysis.get('integrity_score', 0.5))
+        confidence = float(analysis.get('confidence', 0.7))
+        violations = analysis.get('violations', [])
+
+        # Add reasoning to violations if there are issues
+        if not analysis.get('likely_accurate', True):
+            if analysis.get('reasoning'):
+                violations.append(f"Analysis: {analysis['reasoning']}")
 
         result = CitationAnalysisResult(
-            integrity_score=integrity,
+            integrity_score=max(0.0, min(1.0, integrity_score)),
+            behavior_used=behavior,
+            confidence=max(0.0, min(1.0, confidence)),
+            detected_violations=violations,
+            metadata={
+                'agent_id': self.agent_id,
+                'reputation': self.reputation,
+                'exploration_rate': self.exploration_rate,
+                'llm_analysis': True,
+                'is_verifiable': analysis.get('is_verifiable', False),
+                'reasoning': analysis.get('reasoning', '')
+            }
+        )
+
+        self.total_citations += 1
+        logger.info(f"🔍 Claude analysis: integrity={integrity_score:.2f}, confidence={confidence:.2f}")
+
+        return result
+
+    def _analyze_with_heuristics(
+        self,
+        document: CitationDocument,
+        behavior: CitationBehavior
+    ) -> CitationAnalysisResult:
+        """
+        Fallback heuristic-based analysis when Claude is unavailable.
+
+        Uses deterministic text analysis without any random noise.
+
+        Args:
+            document: Citation to verify
+            behavior: Agent's analysis behavior
+
+        Returns:
+            CitationAnalysisResult from heuristic analysis
+        """
+        violations = []
+        text_lower = document.text.lower()
+        claimed_lower = document.claimed_source.lower()
+
+        # Deterministic heuristic checks
+        integrity_score = 0.5  # Start neutral
+
+        # Check 1: Source format validation
+        has_year = any(str(year) in claimed_lower for year in range(1900, 2030))
+        has_author = any(char.isupper() for char in document.claimed_source[:20] if char.isalpha())
+
+        if not has_year:
+            violations.append("No publication year found in source")
+            integrity_score -= 0.1
+
+        if not has_author:
+            violations.append("No author name pattern detected")
+            integrity_score -= 0.1
+
+        # Check 2: Suspicious claims
+        suspicious_phrases = [
+            "solved", "proved", "cured", "100%", "perfect", "always",
+            "never fails", "guaranteed", "breakthrough", "revolutionary"
+        ]
+        for phrase in suspicious_phrases:
+            if phrase in text_lower:
+                violations.append(f"Suspicious claim detected: '{phrase}'")
+                integrity_score -= 0.15
+
+        # Check 3: Citation format consistency
+        if "et al" in claimed_lower and "et al" not in text_lower:
+            violations.append("Citation mentions 'et al' but text doesn't reference multiple authors")
+            integrity_score -= 0.05
+
+        # Check 4: Plausibility of numbers
+        import re
+        percentages = re.findall(r'(\d+(?:\.\d+)?)\s*%', text_lower)
+        for pct in percentages:
+            val = float(pct)
+            if val > 99.9 or (val > 95 and "accuracy" in text_lower):
+                violations.append(f"Implausibly high percentage: {val}%")
+                integrity_score -= 0.1
+
+        # Clamp score
+        integrity_score = max(0.0, min(1.0, integrity_score))
+
+        # Confidence based on how many checks we could apply
+        confidence = 0.4 if violations else 0.6
+
+        result = CitationAnalysisResult(
+            integrity_score=integrity_score,
             behavior_used=behavior,
             confidence=confidence,
             detected_violations=violations,
             metadata={
                 'agent_id': self.agent_id,
                 'reputation': self.reputation,
-                'exploration_rate': self.exploration_rate
+                'exploration_rate': self.exploration_rate,
+                'llm_analysis': False,
+                'fallback_reason': 'ANTHROPIC_API_KEY not set or anthropic package not installed'
             }
         )
 
         self.total_citations += 1
+        logger.info(f"📋 Heuristic analysis: integrity={integrity_score:.2f} (fallback mode)")
 
         return result
 

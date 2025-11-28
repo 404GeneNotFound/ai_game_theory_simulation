@@ -1,6 +1,259 @@
 # MARCUS 3.2 Live Demo Script
 
-## Pre-Demo Setup Checklist
+This document provides two ways to run the MARCUS 3.2 demo:
+1. **GKE Deployment** - For production demos with full infrastructure
+2. **Local Development** - For testing without cloud resources
+
+---
+
+## Option A: Local Development Setup (No GKE Required)
+
+This section walks you through running MARCUS 3.2 entirely on your local machine using Docker.
+
+### Prerequisites
+
+- **Docker** installed and running
+- **Node.js 18+** installed
+- **Python 3.9+** installed
+- **PostgreSQL client** (optional, for database inspection)
+
+### Step 1: Start Required Services
+
+```bash
+# Navigate to the project root
+cd /path/to/ai_game_theory_simulation
+
+# Start Redis via Docker (port 6380 to avoid conflicts)
+docker run -d --name marcus-redis -p 6380:6379 redis:7-alpine
+
+# Start PostgreSQL via Docker
+docker run -d --name marcus-postgres \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=marcus_platform \
+  -p 5432:5432 \
+  postgres:15-alpine
+
+# Verify both are running
+docker ps
+```
+
+### Step 2: Initialize the Database
+
+```bash
+# Wait for PostgreSQL to be ready
+sleep 5
+
+# Run database migrations
+PGPASSWORD=postgres psql -h localhost -U postgres -d marcus_platform \
+  -f src/platform/database/migrations/005_complete_schema.sql
+```
+
+### Step 3: Configure Environment
+
+Create the environment file at `src/platform/.env`:
+
+```bash
+cat > src/platform/.env << 'EOF'
+# Database
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_NAME=marcus_platform
+DATABASE_USER=postgres
+DATABASE_PASSWORD=postgres
+
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6380
+
+# Server
+SERVER_PORT=3000
+SERVER_HOST=0.0.0.0
+CORS_ORIGINS=http://localhost:3000,http://localhost:3333
+
+# Features
+ENABLE_AGENTS=true
+ENABLE_GRAPHQL=true
+
+# Authentication (development only)
+JWT_SECRET=your-development-secret-key-minimum-32-chars
+
+# Optional: Add for full agent functionality
+# ANTHROPIC_API_KEY=your-api-key-here
+EOF
+```
+
+**Note:** Without `ANTHROPIC_API_KEY`, agents will use mock responses. Set it for full LLM-powered analysis.
+
+### Step 4: Install Dependencies
+
+```bash
+# Install Node.js dependencies
+cd src/platform
+npm install
+
+# Install Python agent dependencies (optional, for full agent mode)
+cd agents
+pip install -r requirements.txt
+cd ..
+```
+
+### Step 5: Start MARCUS 3.2
+
+```bash
+# From src/platform directory
+npx tsx startup.ts
+```
+
+You should see:
+```
+🚀 MARCUS 3.2 Citation Integrity Platform
+==========================================
+
+📋 MARCUS 3.2 Configuration Summary:
+=====================================
+Server: 0.0.0.0:3000
+Database: postgres@localhost:5432/marcus_platform
+Redis: localhost:6380/0
+Agents: Enabled (3 agents)
+=====================================
+
+✅ MARCUS 3.2 Platform OPERATIONAL
+📍 Server: http://0.0.0.0:3000
+📊 Metrics: http://0.0.0.0:9090/metrics
+📝 Health: http://0.0.0.0:3000/health
+```
+
+### Step 6: Test the API
+
+```bash
+# Health check
+curl http://localhost:3000/health
+
+# GraphQL introspection
+curl -X POST http://localhost:3000/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query":"{ __typename }"}'
+
+# Citation analysis
+curl -X POST http://localhost:3000/graphql \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "mutation { analyzeCitationAndStore(text: \"GPT-4 achieved 86.4% accuracy on MMLU\", claimedSource: \"OpenAI Technical Report 2023\") { meanIntegrity consensus numAgents recommendations } }"
+  }' | jq .
+```
+
+Expected response:
+```json
+{
+  "data": {
+    "analyzeCitationAndStore": {
+      "meanIntegrity": 0.85,
+      "consensus": 0.92,
+      "numAgents": 1,
+      "recommendations": []
+    }
+  }
+}
+```
+
+### Step 7: Access GraphQL Playground
+
+Open http://localhost:3000/graphql in your browser to use the interactive GraphQL playground.
+
+### Local Demo Cleanup
+
+When done, stop the services:
+
+```bash
+# Stop MARCUS (Ctrl+C in the terminal)
+
+# Stop and remove Docker containers
+docker stop marcus-redis marcus-postgres
+docker rm marcus-redis marcus-postgres
+```
+
+### Troubleshooting Local Setup
+
+| Issue | Solution |
+|-------|----------|
+| Port 3000 in use | `lsof -i :3000` then `kill <PID>` |
+| Port 5432 in use | Change `DATABASE_PORT` in .env or stop local PostgreSQL |
+| Redis connection refused | Verify Docker is running: `docker ps` |
+| `redis.set is not a function` | Restart server - this was fixed in v3.2 |
+| Database table not found | Re-run migrations (Step 2) |
+| Agents not responding | Check `ANTHROPIC_API_KEY` is set |
+
+### Local Demo Flow (5 minutes)
+
+Once MARCUS is running locally, you can demonstrate the key features:
+
+#### Demo 1: Valid Citation Analysis
+
+```bash
+curl -X POST http://localhost:3000/graphql \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "mutation { analyzeCitationAndStore(text: \"GPT-4 achieved 86.4% accuracy on the MMLU benchmark\", claimedSource: \"OpenAI (2023). GPT-4 Technical Report. arXiv:2303.08774\") { meanIntegrity consensus numAgents recommendations } }"
+  }' | jq .
+```
+
+**Talking Point:** "This is a real citation - notice the high integrity score."
+
+#### Demo 2: Fake Citation Detection
+
+```bash
+curl -X POST http://localhost:3000/graphql \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "mutation { analyzeCitationAndStore(text: \"ChatGPT solved the Riemann Hypothesis\", claimedSource: \"Altman, S. (2025). Breaking Mathematics. OpenAI Blog.\") { meanIntegrity consensus numAgents recommendations } }"
+  }' | jq .
+```
+
+**Talking Point:** "MARCUS immediately flags this as suspicious - the low integrity score and recommendations tell you why."
+
+#### Demo 3: Query Past Analyses
+
+```graphql
+# In GraphQL Playground (http://localhost:3000/graphql)
+query {
+  citationAnalyses(limit: 5) {
+    id
+    integrityScore
+    status
+    createdAt
+  }
+}
+```
+
+#### Demo 4: Health & Metrics
+
+```bash
+# Health endpoint
+curl http://localhost:3000/health | jq .
+
+# Prometheus metrics
+curl http://localhost:9090/metrics | head -50
+```
+
+#### Demo 5: Database Inspection (Optional)
+
+```bash
+# View saved analyses
+PGPASSWORD=postgres psql -h localhost -U postgres -d marcus_platform \
+  -c "SELECT id, document_text, integrity_score, status, created_at
+      FROM citation_analyses
+      ORDER BY created_at DESC
+      LIMIT 5;"
+```
+
+---
+
+## Option B: GKE Deployment Setup
+
+For production demos with full Kubernetes infrastructure.
+
+### Pre-Demo Setup Checklist
 - [ ] MARCUS platform running in GKE (`kubectl get pods -n marcus-platform`)
 - [ ] Port forwarding active:
   - [ ] GraphQL: `kubectl port-forward -n marcus-platform svc/orchestrator 4001:4000`
