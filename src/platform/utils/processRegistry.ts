@@ -13,9 +13,11 @@
  * - Periodic zombie process detection (every 60 seconds)
  * - Prometheus metrics for process count and zombie detection
  * - Graceful cleanup on platform shutdown
+ * - H2 FIX: reset() method for testing to prevent flaky tests
  *
  * Author: Marcus (Platform Engineer)
  * Date: 2025-11-22
+ * Updated: 2025-11-28 (H2: Add reset() for testing)
  */
 
 import { ChildProcess } from 'child_process';
@@ -125,6 +127,12 @@ const processRestartCounter = new Counter({
  * // Unregister on clean shutdown
  * registry.unregister(agentId);
  * ```
+ *
+ * For testing:
+ * ```typescript
+ * // Reset singleton state between tests
+ * ProcessRegistry.reset();
+ * ```
  */
 export class ProcessRegistry {
   private static instance: ProcessRegistry;
@@ -144,6 +152,11 @@ export class ProcessRegistry {
    */
   private cleanupIntervalMs: number = 60_000;
 
+  /**
+   * Whether the cleanup monitor is currently running
+   */
+  private isMonitorRunning: boolean = false;
+
   private constructor() {
     // Start periodic cleanup
     this.startCleanupMonitor();
@@ -157,6 +170,66 @@ export class ProcessRegistry {
       ProcessRegistry.instance = new ProcessRegistry();
     }
     return ProcessRegistry.instance;
+  }
+
+  /**
+   * H2 FIX: Reset the singleton for testing.
+   *
+   * This method:
+   * 1. Stops the cleanup monitor timer
+   * 2. Clears all tracked processes
+   * 3. Restarts the cleanup monitor
+   * 4. Resets metrics to zero
+   *
+   * IMPORTANT: Only use in tests! In production, use shutdown() instead.
+   *
+   * Usage in tests:
+   * ```typescript
+   * beforeEach(() => {
+   *   ProcessRegistry.reset();
+   * });
+   * ```
+   */
+  static reset(): void {
+    if (ProcessRegistry.instance) {
+      // Stop existing monitor
+      ProcessRegistry.instance.stopCleanupMonitor();
+
+      // Clear all processes (without killing them - they may be from previous tests)
+      ProcessRegistry.instance.processes.clear();
+
+      // Reset metrics
+      for (const state of Object.values(ProcessState)) {
+        processCountGauge.set({ state }, 0);
+      }
+
+      // Restart monitor
+      ProcessRegistry.instance.startCleanupMonitor();
+
+      console.log('🔄 ProcessRegistry reset for testing');
+    }
+  }
+
+  /**
+   * H2 FIX: Destroy the singleton entirely.
+   *
+   * Use this for complete cleanup in test teardown (afterAll).
+   * After calling this, getInstance() will create a fresh instance.
+   *
+   * Usage in tests:
+   * ```typescript
+   * afterAll(() => {
+   *   ProcessRegistry.destroyInstance();
+   * });
+   * ```
+   */
+  static destroyInstance(): void {
+    if (ProcessRegistry.instance) {
+      ProcessRegistry.instance.stopCleanupMonitor();
+      ProcessRegistry.instance.processes.clear();
+      ProcessRegistry.instance = undefined as any;
+      console.log('🗑️ ProcessRegistry instance destroyed');
+    }
   }
 
   /**
@@ -289,14 +362,21 @@ export class ProcessRegistry {
   /**
    * Start periodic zombie process cleanup.
    */
-  private startCleanupMonitor(): void {
-    if (this.cleanupInterval) {
+  startCleanupMonitor(): void {
+    if (this.cleanupInterval || this.isMonitorRunning) {
       return;
     }
 
     this.cleanupInterval = setInterval(() => {
       this.detectAndCleanupZombies();
     }, this.cleanupIntervalMs);
+
+    // H2 FIX: Unref the timer so it doesn't keep the process alive during tests
+    if (this.cleanupInterval.unref) {
+      this.cleanupInterval.unref();
+    }
+
+    this.isMonitorRunning = true;
 
     console.log(`🧹 Zombie cleanup monitor started (interval: ${this.cleanupIntervalMs}ms, threshold: ${this.zombieThresholdMs}ms)`);
   }
@@ -308,8 +388,17 @@ export class ProcessRegistry {
     if (this.cleanupInterval) {
       clearInterval(this.cleanupInterval);
       this.cleanupInterval = undefined;
+      this.isMonitorRunning = false;
       console.log('🛑 Zombie cleanup monitor stopped');
     }
+  }
+
+  /**
+   * Check if cleanup monitor is running.
+   * Useful for testing.
+   */
+  isCleanupMonitorRunning(): boolean {
+    return this.isMonitorRunning;
   }
 
   /**
@@ -369,12 +458,17 @@ export class ProcessRegistry {
       metadata.process.kill('SIGTERM');
 
       // Force kill after 5 seconds if still alive
-      setTimeout(() => {
+      const forceKillTimeout = setTimeout(() => {
         if (!metadata.process.killed) {
           console.warn(`⚠️ Force killing zombie process: ${metadata.agentId} (PID: ${metadata.pid})`);
           metadata.process.kill('SIGKILL');
         }
       }, 5000);
+
+      // H2 FIX: Unref the timer so it doesn't keep the process alive
+      if (forceKillTimeout.unref) {
+        forceKillTimeout.unref();
+      }
 
     } catch (err) {
       console.error(`❌ Failed to kill zombie process ${metadata.agentId}:`, err);
@@ -461,6 +555,24 @@ export class ProcessRegistry {
   }
 
   /**
+   * Configure zombie detection parameters.
+   * Useful for testing with shorter timeouts.
+   *
+   * @param zombieThresholdMs Time before process is considered zombie
+   * @param cleanupIntervalMs How often to check for zombies
+   */
+  configure(zombieThresholdMs: number, cleanupIntervalMs: number): void {
+    this.zombieThresholdMs = zombieThresholdMs;
+    this.cleanupIntervalMs = cleanupIntervalMs;
+
+    // Restart monitor with new interval
+    this.stopCleanupMonitor();
+    this.startCleanupMonitor();
+
+    console.log(`⚙️ ProcessRegistry configured: zombie threshold=${zombieThresholdMs}ms, cleanup interval=${cleanupIntervalMs}ms`);
+  }
+
+  /**
    * Cleanup all processes (shutdown).
    */
   async shutdown(): Promise<void> {
@@ -484,12 +596,17 @@ export class ProcessRegistry {
             metadata.process.kill('SIGTERM');
 
             // Force kill after 5 seconds
-            setTimeout(() => {
+            const forceKillTimeout = setTimeout(() => {
               if (!metadata.process.killed) {
                 metadata.process.kill('SIGKILL');
               }
               resolve();
             }, 5000);
+
+            // H2 FIX: Unref the timer
+            if (forceKillTimeout.unref) {
+              forceKillTimeout.unref();
+            }
           })
         );
       }

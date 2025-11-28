@@ -696,18 +696,11 @@ export class AgentStateManager {
     // H1 FIX: Use shared Redis connection pool instead of dedicated client
     this.redisPool = redisPool;
 
-    // CRITICAL FIX: Distributed lock manager for race condition prevention
-    // Note: DistributedLockManager needs to be updated to use pool
-    // For now, acquire a dedicated client for lock manager
-    this.lockManager = new DistributedLockManager(
-      new Redis({
-        host: process.env.REDIS_HOST || 'localhost',
-        port: parseInt(process.env.REDIS_PORT || '6379', 10),
-        db: parseInt(process.env.REDIS_DB || '0', 10)
-      })
-    );
+    // H1 FIX (COMPLETE): DistributedLockManager now uses shared pool
+    // Eliminates duplicate Redis client - single connection pool for all components
+    this.lockManager = new DistributedLockManager(redisPool);
 
-    console.log('✅ AgentStateManager initialized with Redis pool');
+    console.log('✅ AgentStateManager initialized with Redis pool (lock manager uses shared pool)');
   }
 
   /**
