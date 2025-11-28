@@ -8,8 +8,31 @@
  * - Subscription support via WebSockets
  * - Playground in development only
  *
+ * M2 TODO: Redis-backed PubSub for multi-pod production
+ * =====================================================
+ * Current PubSub uses in-memory graphql-subscriptions which doesn't work
+ * across multiple K8s pods. For production multi-pod deployments:
+ *
+ * 1. Install: npm install graphql-redis-subscriptions
+ * 2. Replace PubSub import with RedisPubSub
+ * 3. Configure with same Redis host as RedisConnectionPool
+ * 4. Update GraphQLContext type in resolvers.ts
+ *
+ * Example:
+ * ```typescript
+ * import { RedisPubSub } from 'graphql-redis-subscriptions';
+ * const pubsub = new RedisPubSub({
+ *   publisher: new Redis(redisConfig),
+ *   subscriber: new Redis(redisConfig)
+ * });
+ * ```
+ *
+ * Impact: Subscriptions will work across all orchestrator pods
+ * Priority: MEDIUM (only needed when running 3+ replicas with subscriptions)
+ *
  * Author: Marcus (Platform Engineer)
  * Date: 2025-11-22
+ * Updated: 2025-11-28 (M2 documentation)
  */
 
 import { ApolloServer } from '@apollo/server';

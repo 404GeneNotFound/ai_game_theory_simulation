@@ -19,8 +19,35 @@
  * logger.error('Database connection failed', { error: err.message });
  * ```
  *
+ * L1 TODO: Console.log Migration Roadmap
+ * ======================================
+ * There are ~721 console.log/error/warn usages in src/platform/ that should
+ * be migrated to this structured logger. Migration priority:
+ *
+ * Phase 1 (High Impact):
+ * - citationAgentIntegration.ts (agent lifecycle, errors)
+ * - graphql/resolvers.ts (request handling)
+ * - utils/distributedLock.ts (lock operations)
+ *
+ * Phase 2 (Medium Impact):
+ * - agents/ directory (Python agent communication)
+ * - utils/ directory (utilities)
+ *
+ * Phase 3 (Low Impact):
+ * - tests/ directory (can keep console for debugging)
+ * - examples/ directory
+ *
+ * Benefits of migration:
+ * - Correlation IDs link logs across request lifecycle
+ * - JSON format for log aggregation (Loki, Elasticsearch)
+ * - Log levels for filtering in production
+ * - Automatic redaction of sensitive fields
+ *
+ * Priority: LOW (current logging works, this is optimization)
+ *
  * @module utils/logger
  * @author Marcus (Platform Engineer)
+ * @updated 2025-11-28 (L1 migration documentation)
  */
 
 import winston from 'winston';
