@@ -456,10 +456,15 @@ class CitationIntegrityAgent:
 
     def analyze_citation(self, document: CitationDocument) -> CitationAnalysisResult:
         """
-        Analyze a citation for integrity using Claude LLM.
+        Analyze a citation for integrity using HYBRID approach.
 
-        Uses Anthropic's Claude API to verify if a citation is accurate,
-        check if the claimed source exists, and detect potential fabrications.
+        Strategy:
+        1. Run fast heuristic analysis first (free, instant)
+        2. If heuristic score is uncertain (0.3-0.7), escalate to LLM
+        3. If heuristic detects clear fake (<0.3) or clear valid (>0.7), skip LLM
+        4. LLM provides final verdict for uncertain cases
+
+        This saves API costs while maintaining high accuracy.
 
         Args:
             document: CitationDocument to analyze
@@ -469,19 +474,53 @@ class CitationIntegrityAgent:
         """
         behavior = self.current_behavior
 
-        # Try LLM-based analysis first
+        # Step 1: Fast heuristic screening (always runs, free)
+        heuristic_result = self._analyze_with_heuristics(document, behavior)
+        heuristic_score = heuristic_result.integrity_score
+
+        # Step 2: Decide if LLM escalation is needed
         api_key = os.environ.get('ANTHROPIC_API_KEY')
+        llm_available = ANTHROPIC_AVAILABLE and api_key
 
-        if ANTHROPIC_AVAILABLE and api_key:
+        # Thresholds for hybrid decision
+        CERTAIN_FAKE_THRESHOLD = 0.3   # Below this = definitely fake, skip LLM
+        CERTAIN_VALID_THRESHOLD = 0.7  # Above this = probably valid, skip LLM
+
+        # If heuristics are uncertain OR if API is available and we want high accuracy
+        needs_llm_verification = (
+            CERTAIN_FAKE_THRESHOLD <= heuristic_score <= CERTAIN_VALID_THRESHOLD
+        )
+
+        if llm_available and needs_llm_verification:
             try:
-                result = self._analyze_with_claude(document, behavior)
-                self.total_citations += 1
-                return result
-            except Exception as e:
-                logger.warning(f"Claude API error, falling back to heuristics: {e}")
+                logger.info(f"🔀 Hybrid: Heuristic score {heuristic_score:.2f} is uncertain, escalating to LLM")
+                llm_result = self._analyze_with_claude(document, behavior)
 
-        # Fallback to heuristic analysis (no random noise)
-        return self._analyze_with_heuristics(document, behavior)
+                # Add hybrid metadata
+                llm_result.metadata['analysis_mode'] = 'hybrid'
+                llm_result.metadata['heuristic_score'] = heuristic_score
+                llm_result.metadata['heuristic_violations'] = heuristic_result.detected_violations
+
+                self.total_citations += 1
+                return llm_result
+
+            except Exception as e:
+                logger.warning(f"Claude API error, using heuristic result: {e}")
+                heuristic_result.metadata['llm_error'] = str(e)
+
+        # Use heuristic result (either certain or LLM unavailable)
+        if heuristic_score < CERTAIN_FAKE_THRESHOLD:
+            logger.info(f"🔀 Hybrid: Heuristic score {heuristic_score:.2f} = CERTAIN FAKE, skipping LLM")
+            heuristic_result.metadata['analysis_mode'] = 'heuristic_only_certain_fake'
+        elif heuristic_score > CERTAIN_VALID_THRESHOLD:
+            logger.info(f"🔀 Hybrid: Heuristic score {heuristic_score:.2f} = LIKELY VALID, skipping LLM")
+            heuristic_result.metadata['analysis_mode'] = 'heuristic_only_likely_valid'
+        else:
+            logger.info(f"🔀 Hybrid: LLM unavailable, using heuristic result")
+            heuristic_result.metadata['analysis_mode'] = 'heuristic_only_no_llm'
+
+        self.total_citations += 1
+        return heuristic_result
 
     def _analyze_with_claude(
         self,
