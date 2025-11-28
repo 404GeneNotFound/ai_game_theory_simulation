@@ -249,6 +249,112 @@ PGPASSWORD=postgres psql -h localhost -U postgres -d marcus_platform \
 
 ---
 
+## Claude LLM-Powered Citation Verification (Demo Report)
+
+**Date:** November 28, 2025
+
+MARCUS 3.2 now uses **Claude AI** to verify citations for accuracy. When you submit a citation, it:
+
+1. Sends the citation text and claimed source to Python agents
+2. Each agent uses Claude to analyze factual accuracy
+3. Claude checks for: journal existence, date accuracy, scientific plausibility, and fact verification
+4. Results are aggregated with integrity scores (0.0 = fake, 1.0 = verified)
+
+### Test Results
+
+#### ❌ TEST 1: Obvious Fabrication
+
+**Input:**
+```
+Text: "According to a 2024 study by MIT, 97% of all scientists agree that the moon is made of cheese."
+Source: "MIT Journal of Lunar Studies, 2024"
+```
+
+**Output:**
+```json
+{
+  "meanIntegrity": 0,
+  "consensus": 1,
+  "recommendations": ["🚨 Low integrity score - citation may be fabricated"],
+  "detectedViolations": [
+    "Scientifically impossible claim - the moon is not made of cheese",
+    "Non-existent journal - 'MIT Journal of Lunar Studies' does not exist",
+    "Impossible consensus statistic - no legitimate scientific survey would find 97% agreement on such a false claim"
+  ]
+}
+```
+
+**Analysis:** Correctly identified as completely fabricated. Integrity score: **0.0**
+
+---
+
+#### ❌ TEST 2: Subtle Historical Errors
+
+**Input:**
+```
+Text: "Einstein published his theory of special relativity in 1920 in the journal Physical Review Letters."
+Source: "Physical Review Letters, 1920"
+```
+
+**Output:**
+```json
+{
+  "meanIntegrity": 0.1,
+  "consensus": 1,
+  "recommendations": ["🚨 Low integrity score - citation may be fabricated or inaccurate"],
+  "detectedViolations": [
+    "Incorrect publication year - Einstein's special relativity was published in 1905, not 1920",
+    "Incorrect journal - Physical Review Letters was not founded until 1958",
+    "Einstein's original special relativity paper was published in Annalen der Physik"
+  ]
+}
+```
+
+**Analysis:** Caught multiple historical inaccuracies. The claim sounds plausible but contains factual errors. Integrity score: **0.1**
+
+---
+
+#### ✅ TEST 3: Legitimate Citation
+
+**Input:**
+```
+Text: "According to the IPCC AR6 report (2021), global temperatures have increased by approximately 1.1 degrees Celsius since pre-industrial times."
+Source: "IPCC AR6 Climate Change 2021: The Physical Science Basis"
+```
+
+**Output:**
+```json
+{
+  "meanIntegrity": 1,
+  "consensus": 1,
+  "recommendations": ["✅ Citation appears valid - high integrity and consensus"],
+  "detectedViolations": []
+}
+```
+
+**Analysis:** Verified as accurate. Report exists, claim matches known data. Integrity score: **1.0**
+
+---
+
+### How to Run Your Own Test
+
+```bash
+# Start MARCUS 3.2 (if not running)
+cd src/platform && source .env && npx tsx startup.ts &
+
+# Wait for startup
+sleep 10
+
+# Test a citation
+curl -s -X POST http://localhost:3000/graphql \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "mutation { analyzeCitationAndStore(text: \"YOUR CITATION TEXT HERE\", claimedSource: \"YOUR SOURCE HERE\") { meanIntegrity consensus recommendations agentResults { integrityScore detectedViolations } } }"
+  }' | jq .
+```
+
+---
+
 ## Option B: GKE Deployment Setup
 
 For production demos with full Kubernetes infrastructure.
