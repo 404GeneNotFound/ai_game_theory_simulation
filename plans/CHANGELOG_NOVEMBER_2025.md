@@ -8,6 +8,58 @@
 
 ## Week of November 23-30, 2025
 
+### November 28, 2025 (MARCUS PR #500 Architecture Review Fixes)
+
+**Work Completed Nov 28:** ~3 hours (architecture review response)
+
+#### PR #500 Architecture Review Fixes Complete
+- **Status:** ✅ READY FOR MERGE - All HIGH + MEDIUM priority issues resolved
+- **Time:** ~3 hours (6 issues fixed + test validation)
+- **Complexity:** 4 systems - Redis connection pooling, process registry, GraphQL schema, PubSub subscriptions
+- **Branch:** `marcus-platform-pr` (PR #500)
+- **Review Source:** `reviews/marcus_platform_architecture_review_20251128.md`
+
+**Issues Fixed:**
+- ✅ **H1: Duplicate Redis Client** - DistributedLockManager now uses shared RedisConnectionPool (prevents N+1 connections at scale)
+- ✅ **H2: ProcessRegistry Singleton** - Added reset() + destroyInstance() + .unref() for test isolation and timer cleanup
+- ✅ **M1: GraphQL Memory State** - Marked unimplemented fields as nullable (accurate API contract)
+- ✅ **M2: Unimplemented Mutations** - Removed placeholder mutations from schema (no false promises)
+- ✅ **M3: PubSub Memory Growth** - Implemented Redis-backed PubSub for production (prevents memory accumulation)
+- ✅ **M4: DataLoader Cache Isolation** - Added test suite to verify per-request cache isolation
+
+**Test Results:**
+- 48/49 tests passing (96% success rate)
+- distributedLock.test.ts: 20/20 ✅
+- processRegistry.test.ts: 20/21 ⚠️ (1 pre-existing flaky test documented)
+- dataloaders.test.ts: 8/8 ✅ (NEW)
+
+**Files Modified/Created:**
+1. `src/platform/utils/distributedLock.ts` - H1 fix
+2. `src/platform/integration/citationAgentIntegration.ts` - H1 fix + cleanup
+3. `src/platform/utils/processRegistry.ts` - H2 fix
+4. `src/platform/graphql/schema.graphql` - M1/M2 fixes
+5. `src/platform/graphql/resolvers.ts` - M1/M2 fixes
+6. `src/platform/graphql/pubsub.ts` - M3 fix (NEW - 77 lines)
+7. `src/platform/graphql/dataloaders.ts` - M4 documentation
+8. `src/platform/graphql/__tests__/dataloaders.test.ts` - M4 tests (NEW - 246 lines)
+
+**Commits:**
+- `c55a5d77` - "fix: Architecture review quick wins (H1, H2)"
+- `fbae6e17` - "fix(graphql): Remove unimplemented mutations (M1)"
+- `2135d6fb` - "fix: Apply user's improved H1 fix for lock manager cleanup"
+- `de151a73` - "feat(graphql): Medium-priority architecture fixes (M1-M4)"
+
+**Archive:** `plans/completed/MARCUS_PR500_ARCHITECTURE_FIXES_20251128.md`
+
+**Merge Status:** ✅ APPROVED - Platform ready for merge to main
+
+**Pre-Existing Flaky Test Documented:**
+- Test: `ProcessRegistry › zombie detection › should detect zombie processes`
+- Priority: LOW (does not block merge)
+- Action: Added roadmap item for future fix with jest.useFakeTimers()
+
+---
+
 ### November 25, 2025 (CI/CD Workflow Debugging Enhancement)
 
 **Work Completed Nov 25:** ~0.5 hours (minor infrastructure enhancement)
