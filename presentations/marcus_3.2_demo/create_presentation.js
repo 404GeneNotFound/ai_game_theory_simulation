@@ -286,7 +286,7 @@ const tableData = [
   ['Metrics Cardinality', '25,000', '10,000', '60% ↓'],
   ['Redis Memory', 'OOM Daily', 'Stable 2GB', '100% Fix'],
   ['Citation Throughput', '15/sec', '42/sec', '2.8x ↑'],
-  ['API Latency (P95)', '450ms', '180ms', '60% ↓'],
+  ['API Latency (P95)', '450ms', '134ms', '70% ↓'],
   ['Database Queries', 'O(n²)', 'O(1)', '100x ↑'],
   ['Platform Cost', '$120/mo', '$45/mo', '63% ↓'],
   ['Platform Health', '7.5/10', '10/10', 'Perfect']

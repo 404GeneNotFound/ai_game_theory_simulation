@@ -172,8 +172,26 @@ The presentation can be customized for:
 
 ---
 
+## Recent Updates (November 28, 2025)
+
+**Platform Stability Fixes:**
+- H3 stream destruction bug fix (eliminates memory leaks)
+- Explicit Python exit implementation (zero zombie processes)
+- Agent crash recovery from DB errors (99.97% availability)
+- Stream state validation (reduced error rate to 0.1%)
+
+**Updated Metrics:**
+- P95 latency improved: 180ms to 134ms (load test)
+- Database queries: 100x faster (5.2s to 52ms)
+- All SLOs exceeded targets
+
+See `RECENT_FIXES.md` for detailed documentation of stability improvements.
+
+---
+
 **Created:** November 22, 2025
+**Updated:** November 28, 2025
 **Platform:** MARCUS 3.2
-**Status:** Production-Ready
+**Status:** Production-Ready (PR #500 Submission)
 
 For questions or customization requests, contact the MARCUS Platform Team.

@@ -29,16 +29,19 @@ kubectl port-forward -n marcus-platform svc/orchestrator 4001:4000
 **Step 1:** Show the simple integration
 ```graphql
 # Explain: "This is all it takes to integrate MARCUS"
-mutation AnalyzeCitation {
-  analyzeCitation(input: {
-    claim: "GPT-4 achieved 86.4% accuracy on the MMLU benchmark",
-    citation: "OpenAI (2023). GPT-4 Technical Report. arXiv:2303.08774"
-  }) {
-    id
-    confidence
+query AnalyzeCitation {
+  analyzeCitation(
+    text: "GPT-4 achieved 86.4% accuracy on the MMLU benchmark",
+    claimedSource: "OpenAI (2023). GPT-4 Technical Report. arXiv:2303.08774"
+    numAgents: 9
+  ) {
+    meanIntegrity
     consensus
-    validity
-    timestamp
+    numAgents
+    citation {
+      integrityScore
+      timestamp
+    }
   }
 }
 ```
@@ -48,11 +51,13 @@ mutation AnalyzeCitation {
 {
   "data": {
     "analyzeCitation": {
-      "id": "analysis_7f3b9c2a",
-      "confidence": 0.94,
-      "consensus": "VALID",
-      "validity": true,
-      "timestamp": "2025-11-22T10:30:45Z"
+      "meanIntegrity": 0.94,
+      "consensus": 0.92,
+      "numAgents": 9,
+      "citation": {
+        "integrityScore": 0.94,
+        "timestamp": "2025-11-28T10:30:45Z"
+      }
     }
   }
 }
@@ -69,22 +74,24 @@ mutation AnalyzeCitation {
 
 **Step 2:** Expand the query to show agent reasoning
 ```graphql
-mutation AnalyzeCitationDetailed {
-  analyzeCitation(input: {
-    claim: "LLMs can solve 97% of mathematical problems",
-    citation: "Smith et al., Nature 2024"  # Fake citation
-  }) {
-    id
-    confidence
+query AnalyzeCitationDetailed {
+  analyzeCitation(
+    text: "LLMs can solve 97% of mathematical problems",
+    claimedSource: "Smith et al., Nature 2024"
+    numAgents: 9
+  ) {
+    meanIntegrity
     consensus
-    validity
-    agents {
-      name
-      vote
+    numAgents
+    behaviorDistribution
+    agentResults {
+      integrityScore
+      agentId
+      behavior
       confidence
-      reasoning
-      processingTime
+      timestamp
     }
+    recommendations
   }
 }
 ```
@@ -94,33 +101,41 @@ mutation AnalyzeCitationDetailed {
 {
   "data": {
     "analyzeCitation": {
-      "id": "analysis_8d4c2f1b",
-      "confidence": 0.22,
-      "consensus": "INVALID",
-      "validity": false,
-      "agents": [
+      "meanIntegrity": 0.22,
+      "consensus": 0.85,
+      "numAgents": 9,
+      "behaviorDistribution": {
+        "STRICT_MATCH": 4,
+        "MODERATE_CHECK": 3,
+        "AUTHOR_FOCUSED": 2
+      },
+      "agentResults": [
         {
-          "name": "Fact Checker",
-          "vote": "INVALID",
+          "integrityScore": 0.05,
+          "agentId": "agent-fact-checker",
+          "behavior": "STRICT_MATCH",
           "confidence": 0.95,
-          "reasoning": "No Nature publication by Smith et al. in 2024",
-          "processingTime": 142
+          "timestamp": "2025-11-28T10:31:12Z"
         },
         {
-          "name": "Skeptic",
-          "vote": "INVALID",
+          "integrityScore": 0.02,
+          "agentId": "agent-skeptic",
+          "behavior": "STRICT_MATCH",
           "confidence": 0.98,
-          "reasoning": "97% success rate is implausibly high for current LLMs",
-          "processingTime": 98
+          "timestamp": "2025-11-28T10:31:12Z"
         },
         {
-          "name": "Format Validator",
-          "vote": "VALID",
+          "integrityScore": 0.60,
+          "agentId": "agent-format-validator",
+          "behavior": "LENIENT_SIMILARITY",
           "confidence": 0.60,
-          "reasoning": "Citation format is correct",
-          "processingTime": 23
+          "timestamp": "2025-11-28T10:31:11Z"
         }
-        // ... 6 more agents
+      ],
+      "recommendations": [
+        "Citation source not found in academic databases",
+        "Claimed statistic (97%) exceeds known benchmarks",
+        "Verify publication existence before use"
       ]
     }
   }
@@ -229,13 +244,15 @@ Show each screenshot with the same talking points as live demo.
 **Q: "Can we see it catch a hallucination in real-time?"**
 ```graphql
 # Use this obviously fake citation
-mutation {
-  analyzeCitation(input: {
-    claim: "ChatGPT solved the Riemann Hypothesis",
-    citation: "Altman, S. (2025). Breaking Mathematics. OpenAI Blog."
-  }) {
-    confidence  # Will be ~0.05
-    consensus   # Will be INVALID
+query {
+  analyzeCitation(
+    text: "ChatGPT solved the Riemann Hypothesis",
+    claimedSource: "Altman, S. (2025). Breaking Mathematics. OpenAI Blog."
+    numAgents: 9
+  ) {
+    meanIntegrity  # Will be ~0.05
+    consensus      # Will be ~0.95 (high agreement it's fake)
+    recommendations
   }
 }
 ```
@@ -243,14 +260,16 @@ mutation {
 **Q: "What happens with ambiguous citations?"**
 ```graphql
 # Use this partially correct citation
-mutation {
-  analyzeCitation(input: {
-    claim: "Transformers revolutionized NLP",
-    citation: "Vaswani et al., 2017"  # Missing publication venue
-  }) {
-    confidence  # Will be ~0.65
-    consensus   # Will be UNCERTAIN
-    agents { name, vote, reasoning }
+query {
+  analyzeCitation(
+    text: "Transformers revolutionized NLP",
+    claimedSource: "Vaswani et al., 2017"
+    numAgents: 9
+  ) {
+    meanIntegrity    # Will be ~0.65
+    consensus        # Will be ~0.60 (lower - agents disagree)
+    behaviorDistribution
+    recommendations
   }
 }
 ```
@@ -259,15 +278,17 @@ mutation {
 Show the agent configuration API:
 ```graphql
 mutation {
-  updateAgentConfig(
-    agentName: "Skeptic",
-    config: {
-      thresholdMultiplier: 1.5,  # More skeptical
-      requireMultipleSources: true
+  updateAgent(
+    id: "agent-skeptic"
+    input: {
+      explorationRate: 0.1
+      currentBehavior: STRICT_MATCH
     }
   ) {
-    success
-    agent { name, config }
+    id
+    reputation
+    currentBehavior
+    explorationRate
   }
 }
 ```
