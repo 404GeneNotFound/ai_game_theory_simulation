@@ -45,10 +45,19 @@ except ImportError as e:
 # Anthropic Claude API for LLM-based citation verification
 try:
     import anthropic
+    from anthropic import RateLimitError, APIConnectionError, APITimeoutError
     ANTHROPIC_AVAILABLE = True
 except ImportError:
     ANTHROPIC_AVAILABLE = False
     logging.warning("anthropic package not installed. Install with: pip install anthropic")
+
+# Prometheus metrics (optional)
+try:
+    from prometheus_client import Counter
+    PROMETHEUS_AVAILABLE = True
+except ImportError:
+    PROMETHEUS_AVAILABLE = False
+    logging.info("prometheus_client not installed. Metrics will not be collected. Install with: pip install prometheus-client")
 
 # Configure logging
 logging.basicConfig(
@@ -56,6 +65,20 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# Configuration constants
+MAX_CITATION_LENGTH = 5000  # H2: Limit citation text length to prevent API quota waste
+MAX_LLM_RETRIES = 2  # H1: Number of retries for transient LLM errors
+
+# M1: Prometheus metrics for analysis modes
+if PROMETHEUS_AVAILABLE:
+    citation_analysis_mode_counter = Counter(
+        'marcus_citation_analysis_mode_total',
+        'Total citations analyzed by mode',
+        ['mode']
+    )
+else:
+    citation_analysis_mode_counter = None
 
 
 class CitationBehavior(Enum):
@@ -472,6 +495,15 @@ class CitationIntegrityAgent:
         Returns:
             CitationAnalysisResult with integrity assessment
         """
+        # H2 FIX: Input length validation
+        if len(document.text) > MAX_CITATION_LENGTH:
+            logger.warning(f"Citation text exceeds {MAX_CITATION_LENGTH} chars ({len(document.text)}), truncating")
+            document.text = document.text[:MAX_CITATION_LENGTH]
+
+        if len(document.claimed_source) > MAX_CITATION_LENGTH:
+            logger.warning(f"Claimed source exceeds {MAX_CITATION_LENGTH} chars ({len(document.claimed_source)}), truncating")
+            document.claimed_source = document.claimed_source[:MAX_CITATION_LENGTH]
+
         behavior = self.current_behavior
 
         # Step 1: Fast heuristic screening (always runs, free)
@@ -492,32 +524,81 @@ class CitationIntegrityAgent:
         )
 
         if llm_available and needs_llm_verification:
-            try:
-                logger.info(f"🔀 Hybrid: Heuristic score {heuristic_score:.2f} is uncertain, escalating to LLM")
-                llm_result = self._analyze_with_claude(document, behavior)
+            # H1 FIX: Retry logic for transient LLM errors
+            last_error = None
+            for attempt in range(MAX_LLM_RETRIES + 1):
+                try:
+                    if attempt > 0:
+                        # Exponential backoff: 1s, 2s
+                        backoff_time = 2 ** (attempt - 1)
+                        logger.info(f"🔄 Retry {attempt}/{MAX_LLM_RETRIES} after {backoff_time}s backoff")
+                        time.sleep(backoff_time)
 
-                # Add hybrid metadata
-                llm_result.metadata['analysis_mode'] = 'hybrid'
-                llm_result.metadata['heuristic_score'] = heuristic_score
-                llm_result.metadata['heuristic_violations'] = heuristic_result.detected_violations
+                    logger.info(f"🔀 Hybrid: Heuristic score {heuristic_score:.2f} is uncertain, escalating to LLM (attempt {attempt + 1}/{MAX_LLM_RETRIES + 1})")
+                    llm_result = self._analyze_with_claude(document, behavior)
 
-                self.total_citations += 1
-                return llm_result
+                    # Add hybrid metadata
+                    llm_result.metadata['analysis_mode'] = 'hybrid'
+                    llm_result.metadata['heuristic_score'] = heuristic_score
+                    llm_result.metadata['heuristic_violations'] = heuristic_result.detected_violations
+                    if attempt > 0:
+                        llm_result.metadata['llm_retry_count'] = attempt
 
-            except Exception as e:
-                logger.warning(f"Claude API error, using heuristic result: {e}")
-                heuristic_result.metadata['llm_error'] = str(e)
+                    # M1: Track metrics
+                    if citation_analysis_mode_counter:
+                        citation_analysis_mode_counter.labels(mode='hybrid').inc()
+
+                    self.total_citations += 1
+                    return llm_result
+
+                except (RateLimitError, APIConnectionError, APITimeoutError) as e:
+                    # Transient errors - retry
+                    last_error = e
+                    logger.warning(f"⚠️ Transient LLM error (attempt {attempt + 1}/{MAX_LLM_RETRIES + 1}): {type(e).__name__}: {e}")
+                    if attempt == MAX_LLM_RETRIES:
+                        # Final retry failed - fall back to heuristics
+                        logger.error(f"❌ All {MAX_LLM_RETRIES + 1} LLM attempts failed, using heuristic result")
+                        heuristic_result.metadata['llm_error'] = f"All retries failed: {type(e).__name__}: {str(e)}"
+                        heuristic_result.metadata['analysis_mode'] = 'llm_error_fallback'
+                        # M1: Track metrics
+                        if citation_analysis_mode_counter:
+                            citation_analysis_mode_counter.labels(mode='llm_error_fallback').inc()
+                        break
+                    # Otherwise, continue to next retry
+
+                except Exception as e:
+                    # Permanent/unknown errors - don't retry
+                    logger.error(f"❌ Permanent LLM error, using heuristic result: {type(e).__name__}: {e}")
+                    heuristic_result.metadata['llm_error'] = f"Permanent error: {type(e).__name__}: {str(e)}"
+                    heuristic_result.metadata['analysis_mode'] = 'llm_error_fallback'
+                    # M1: Track metrics
+                    if citation_analysis_mode_counter:
+                        citation_analysis_mode_counter.labels(mode='llm_error_fallback').inc()
+                    break
 
         # Use heuristic result (either certain or LLM unavailable)
+        # M2: Always preserve heuristic_score in metadata for all paths
         if heuristic_score < CERTAIN_FAKE_THRESHOLD:
             logger.info(f"🔀 Hybrid: Heuristic score {heuristic_score:.2f} = CERTAIN FAKE, skipping LLM")
             heuristic_result.metadata['analysis_mode'] = 'heuristic_only_certain_fake'
+            heuristic_result.metadata['heuristic_score'] = heuristic_score
+            # M1: Track metrics
+            if citation_analysis_mode_counter:
+                citation_analysis_mode_counter.labels(mode='heuristic_only_certain_fake').inc()
         elif heuristic_score > CERTAIN_VALID_THRESHOLD:
             logger.info(f"🔀 Hybrid: Heuristic score {heuristic_score:.2f} = LIKELY VALID, skipping LLM")
             heuristic_result.metadata['analysis_mode'] = 'heuristic_only_likely_valid'
+            heuristic_result.metadata['heuristic_score'] = heuristic_score
+            # M1: Track metrics
+            if citation_analysis_mode_counter:
+                citation_analysis_mode_counter.labels(mode='heuristic_only_likely_valid').inc()
         else:
             logger.info(f"🔀 Hybrid: LLM unavailable, using heuristic result")
             heuristic_result.metadata['analysis_mode'] = 'heuristic_only_no_llm'
+            heuristic_result.metadata['heuristic_score'] = heuristic_score
+            # M1: Track metrics
+            if citation_analysis_mode_counter:
+                citation_analysis_mode_counter.labels(mode='heuristic_only_no_llm').inc()
 
         self.total_citations += 1
         return heuristic_result
@@ -603,9 +684,13 @@ Respond ONLY with the JSON object, no other text."""
         try:
             analysis = json.loads(response_text)
         except json.JSONDecodeError:
-            # Try to extract JSON from the response
+            # M3 FIX: Try to extract JSON from the response with non-greedy matching
             import re
-            json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+            # Use non-greedy match to avoid capturing spurious JSON
+            json_match = re.search(r'\{.*?\}', response_text, re.DOTALL)
+            if not json_match:
+                # Fall back to greedy match if non-greedy fails
+                json_match = re.search(r'\{[^{}]*\}', response_text)
             if json_match:
                 analysis = json.loads(json_match.group())
             else:
