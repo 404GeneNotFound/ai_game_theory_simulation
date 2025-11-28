@@ -1,7 +1,7 @@
 {
   "name": "@marcus/platform",
-  "version": "3.0.0",
-  "description": "MARCUS 3.0 Citation Integrity Platform - Backend Services",
+  "version": "3.2.0",
+  "description": "MARCUS 3.2 Citation Integrity Platform - Backend Services",
   "private": true,
   "main": "index.ts",
   "scripts": {

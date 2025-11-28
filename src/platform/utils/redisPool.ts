@@ -285,11 +285,7 @@ export class RedisConnectionPool extends EventEmitter {
    * @returns Result of the command
    */
   async execute<T>(fn: (client: Redis) => Promise<T>): Promise<T> {
-    console.log('[DEBUG] RedisConnectionPool.execute called');
     const client = await this.acquire();
-    console.log('[DEBUG] RedisConnectionPool.execute: client type:', typeof client);
-    console.log('[DEBUG] RedisConnectionPool.execute: client.set type:', typeof client?.set);
-    console.log('[DEBUG] RedisConnectionPool.execute: client constructor:', client?.constructor?.name);
     const startTime = Date.now();
 
     try {

@@ -282,7 +282,7 @@ export function getTestConfiguration(): PlatformConfiguration {
  * Print configuration summary (with secrets masked)
  */
 export function printConfigurationSummary(config: PlatformConfiguration): void {
-  console.log('\n📋 MARCUS 3.0 Configuration Summary:');
+  console.log('\n📋 MARCUS 3.2 Configuration Summary:');
   console.log('=====================================');
   console.log(`Server: ${config.server.host}:${config.server.port}`);
   console.log(`Database: ${config.database.user}@${config.database.host}:${config.database.port}/${config.database.database}`);

@@ -117,9 +117,6 @@ export class DistributedLockManager {
                    typeof (redis as any).acquire === 'function' &&
                    typeof (redis as any).release === 'function';
 
-    console.log('[DEBUG] DistributedLockManager constructor: isPool=', isPool);
-    console.log('[DEBUG] DistributedLockManager constructor: redis.constructor=', redis?.constructor?.name);
-
     if (isPool) {
       this.redisPool = redis as RedisConnectionPool;
       this.redisClient = null;
@@ -139,11 +136,7 @@ export class DistributedLockManager {
   private async executeRedisCommand<T>(
     command: (redis: Redis) => Promise<T>
   ): Promise<T> {
-    console.log('[DEBUG] executeRedisCommand: usesPool=', this.usesPool, 'hasPool=', !!this.redisPool);
-    console.log('[DEBUG] executeRedisCommand: redisPool constructor=', this.redisPool?.constructor?.name);
-    console.log('[DEBUG] executeRedisCommand: redisPool.execute type=', typeof this.redisPool?.execute);
     if (this.usesPool && this.redisPool) {
-      console.log('[DEBUG] executeRedisCommand: calling pool.execute()');
       return this.redisPool.execute(command);
     } else if (this.redisClient) {
       return command(this.redisClient);
@@ -181,9 +174,6 @@ export class DistributedLockManager {
     while (true) {
       // Try to acquire lock (SET NX EX)
       const acquired = await this.executeRedisCommand(async (redis) => {
-        console.log('[DEBUG] distributedLock: redis type:', typeof redis);
-        console.log('[DEBUG] distributedLock: redis.set type:', typeof redis?.set);
-        console.log('[DEBUG] distributedLock: redis constructor:', redis?.constructor?.name);
         return redis.set(
           lockKey,
           token,

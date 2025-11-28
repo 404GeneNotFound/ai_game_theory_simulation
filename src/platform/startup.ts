@@ -23,7 +23,7 @@ import { PlatformServer } from './api/server';
 // Load environment variables
 dotenv.config();
 
-console.log('🚀 MARCUS 3.0 Citation Integrity Platform');
+console.log('🚀 MARCUS 3.2 Citation Integrity Platform');
 console.log('==========================================\n');
 
 /**
@@ -185,7 +185,7 @@ async function startServer(config: PlatformConfiguration): Promise<void> {
     const server = new PlatformServer(serverConfig);
     await server.start();
 
-    console.log('\n✅ MARCUS 3.0 Platform OPERATIONAL');
+    console.log('\n✅ MARCUS 3.2 Platform OPERATIONAL');
     console.log(`📍 Server: http://${config.server.host}:${config.server.port}`);
     console.log(`📊 Metrics: http://${config.server.host}:${config.monitoring.metricsPort}/metrics`);
     console.log(`📝 Health: http://${config.server.host}:${config.server.port}/health`);
