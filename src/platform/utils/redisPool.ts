@@ -25,34 +25,46 @@
  */
 
 import Redis from 'ioredis';
-import { Gauge, Counter } from 'prom-client';
+import { Gauge, Counter, register } from 'prom-client';
 import { EventEmitter } from 'events';
 
 // ============================================================================
-// Prometheus Metrics
+// Prometheus Metrics (with safe registration to handle multiple imports)
 // ============================================================================
 
-const redisConnectionsActive = new Gauge({
-  name: 'marcus_redis_connections_active',
-  help: 'Number of active Redis connections in the pool'
-});
+function getOrCreateGauge(name: string, help: string, labelNames?: string[]): Gauge<string> {
+  const existing = register.getSingleMetric(name);
+  if (existing) return existing as Gauge<string>;
+  return new Gauge({ name, help, labelNames: labelNames || [] });
+}
 
-const redisConnectionsIdle = new Gauge({
-  name: 'marcus_redis_connections_idle',
-  help: 'Number of idle Redis connections in the pool'
-});
+function getOrCreateCounter(name: string, help: string, labelNames?: string[]): Counter<string> {
+  const existing = register.getSingleMetric(name);
+  if (existing) return existing as Counter<string>;
+  return new Counter({ name, help, labelNames: labelNames || [] });
+}
 
-const redisConnectionErrors = new Counter({
-  name: 'marcus_redis_connection_errors_total',
-  help: 'Total number of Redis connection errors',
-  labelNames: ['error_type']
-});
+const redisConnectionsActive = getOrCreateGauge(
+  'marcus_redis_connections_active',
+  'Number of active Redis connections in the pool'
+);
 
-const redisCommandDuration = new Gauge({
-  name: 'marcus_redis_command_duration_ms',
-  help: 'Redis command execution duration in milliseconds',
-  labelNames: ['command']
-});
+const redisConnectionsIdle = getOrCreateGauge(
+  'marcus_redis_connections_idle',
+  'Number of idle Redis connections in the pool'
+);
+
+const redisConnectionErrors = getOrCreateCounter(
+  'marcus_redis_connection_errors_total',
+  'Total number of Redis connection errors',
+  ['error_type']
+);
+
+const redisCommandDuration = getOrCreateGauge(
+  'marcus_redis_command_duration_ms',
+  'Redis command execution duration in milliseconds',
+  ['command']
+);
 
 // ============================================================================
 // Configuration
@@ -273,7 +285,11 @@ export class RedisConnectionPool extends EventEmitter {
    * @returns Result of the command
    */
   async execute<T>(fn: (client: Redis) => Promise<T>): Promise<T> {
+    console.log('[DEBUG] RedisConnectionPool.execute called');
     const client = await this.acquire();
+    console.log('[DEBUG] RedisConnectionPool.execute: client type:', typeof client);
+    console.log('[DEBUG] RedisConnectionPool.execute: client.set type:', typeof client?.set);
+    console.log('[DEBUG] RedisConnectionPool.execute: client constructor:', client?.constructor?.name);
     const startTime = Date.now();
 
     try {

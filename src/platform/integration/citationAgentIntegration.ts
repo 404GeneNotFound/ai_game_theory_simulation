@@ -887,20 +887,29 @@ export class AgentStateManager {
       lockKey,
       async () => {
         try {
+          // Schema: user_id, document_text, claimed_source, actual_source, integrity_score,
+          //         consensus_data, agent_results, metadata, analysis_duration_ms, status
           await this.db.query(`
             INSERT INTO citation_analyses (
-              source, mean_integrity, consensus, behavior_distribution,
-              recommendations, num_agents, latency_ms, timestamp
+              document_text, claimed_source, integrity_score, consensus_data,
+              agent_results, metadata, analysis_duration_ms, status
             ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
           `, [
-            'platform',  // Source identifier
-            analysis.meanIntegrity,
-            analysis.consensus,
-            JSON.stringify(analysis.behaviorDistribution),
-            JSON.stringify(analysis.recommendations),
-            analysis.numAgents,
-            analysis.latencyMs,
-            analysis.timestamp
+            analysis.citation?.text || 'platform-analysis',  // document_text
+            analysis.citation?.claimedSource || 'platform',   // claimed_source
+            analysis.meanIntegrity,                          // integrity_score
+            JSON.stringify({                                 // consensus_data
+              consensus: analysis.consensus,
+              behaviorDistribution: analysis.behaviorDistribution,
+              numAgents: analysis.numAgents
+            }),
+            JSON.stringify(analysis.agentResults || []),     // agent_results
+            JSON.stringify({                                 // metadata
+              recommendations: analysis.recommendations,
+              timestamp: analysis.timestamp
+            }),
+            analysis.latencyMs || 0,                         // analysis_duration_ms
+            'completed'                                      // status
           ]);
 
           console.log(`✅ Analysis saved (${analysis.numAgents} agents, consensus: ${analysis.consensus.toFixed(2)})`);

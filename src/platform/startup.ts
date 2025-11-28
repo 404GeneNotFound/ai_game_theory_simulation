@@ -42,6 +42,7 @@ async function initializeOrchestrator(config: PlatformConfiguration): Promise<vo
     const { CitationAgentOrchestrator } = await import('./integration/citationAgentIntegration');
     const { AgentStateManager } = await import('./integration/citationAgentIntegration');
     const { MetricsCollector } = await import('./integration/citationAgentIntegration');
+    const { RedisConnectionPool } = await import('./utils/redisPool');
 
     // Create orchestrator configuration
     const orchestratorConfig = {
@@ -79,10 +80,23 @@ async function initializeOrchestrator(config: PlatformConfiguration): Promise<vo
       }
     };
 
+    // Create shared Redis connection pool (H1 FIX: prevents N+1 connections)
+    const redisPool = new RedisConnectionPool({
+      host: config.redis.host,
+      port: config.redis.port,
+      db: config.redis.db,
+      password: config.redis.password,
+      maxConnections: 10,
+      minConnections: 2,
+      acquireTimeoutMs: 5000,
+      idleTimeoutMs: 30000,
+      healthCheckIntervalMs: 10000
+    });
+
     // Create components
     const stateManager = new AgentStateManager(
       orchestratorConfig.database,
-      orchestratorConfig.redis
+      redisPool  // Pass the pool, not raw config
     );
 
     const metricsCollector = new MetricsCollector();

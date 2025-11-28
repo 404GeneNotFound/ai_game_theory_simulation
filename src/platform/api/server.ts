@@ -520,7 +520,14 @@ export class PlatformServer {
       }
     );
 
-    // 404 handler
+    // NOTE: 404 handler is registered after GraphQL setup in start()
+    // to avoid blocking the /graphql route
+  }
+
+  /**
+   * Setup 404 handler - must be called AFTER GraphQL is set up
+   */
+  private setup404Handler(): void {
     this.app.use((req: Request, res: Response) => {
       res.status(404).json({
         error: 'Not Found',
@@ -605,6 +612,9 @@ export class PlatformServer {
       if (process.env.ENABLE_GRAPHQL === 'true') {
         await this.setupGraphQL();
       }
+
+      // Register 404 handler AFTER GraphQL to avoid blocking /graphql route
+      this.setup404Handler();
 
       // Start server
       this.server = this.httpServer.listen(this.config.port, this.config.host, () => {
