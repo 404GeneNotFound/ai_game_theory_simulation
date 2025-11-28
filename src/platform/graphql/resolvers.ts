@@ -590,97 +590,30 @@ export const queryResolvers = {
 // ============================================================================
 // Mutation Resolvers
 // ============================================================================
+// M1 FIX: Removed unimplemented mutations to prevent NOT_IMPLEMENTED errors
+// Roadmap items: createAgent, updateAgent, resetAgent, updateAsyncRollout, triggerBenchmark
+// See: schema.graphql comments for full list
 
 export const mutationResolvers = {
   /**
-   * Create new agent (admin only)
+   * Connectivity test mutation.
+   * Echoes the input message (or "pong" by default).
+   * Useful for testing that mutations work without side effects.
    */
-  createAgent: async (
+  _ping: (
     _parent: any,
-    args: {
-      input: {
-        id: string;
-        initialReputation?: number;
-        explorationRate?: number;
-        mode?: 'SYNC' | 'ASYNC';
-      };
-    },
-    context: GraphQLContext
-  ) => {
-    // In production, this would spawn a new agent
-    throw new GraphQLError('createAgent not yet implemented', {
-      extensions: { code: 'NOT_IMPLEMENTED' }
-    });
-  },
-
-  /**
-   * Update agent configuration
-   */
-  updateAgent: async (
-    _parent: any,
-    args: {
-      id: string;
-      input: {
-        explorationRate?: number;
-        currentBehavior?: string;
-      };
-    },
-    context: GraphQLContext
-  ) => {
-    // In production, this would update agent config
-    throw new GraphQLError('updateAgent not yet implemented', {
-      extensions: { code: 'NOT_IMPLEMENTED' }
-    });
-  },
-
-  /**
-   * Reset agent state
-   */
-  resetAgent: async (
-    _parent: any,
-    args: { id: string },
-    context: GraphQLContext
-  ) => {
-    // In production, this would reset agent memory and reputation
-    throw new GraphQLError('resetAgent not yet implemented', {
-      extensions: { code: 'NOT_IMPLEMENTED' }
-    });
-  },
-
-  /**
-   * Update async rollout percentage
-   */
-  updateAsyncRollout: async (
-    _parent: any,
-    args: { percent: number },
-    context: GraphQLContext
-  ) => {
-    // Validate percentage
-    if (args.percent < 0 || args.percent > 100) {
-      throw new GraphQLError('Percentage must be between 0 and 100', {
-        extensions: { code: 'INVALID_INPUT' }
-      });
-    }
-
-    // In production, this would update config and trigger gradual rollout
-    throw new GraphQLError('updateAsyncRollout not yet implemented', {
-      extensions: { code: 'NOT_IMPLEMENTED' }
-    });
-  },
-
-  /**
-   * Trigger platform benchmark
-   */
-  triggerBenchmark: async (
-    _parent: any,
-    _args: any,
-    context: GraphQLContext
-  ) => {
-    // In production, this would run a benchmark suite
-    throw new GraphQLError('triggerBenchmark not yet implemented', {
-      extensions: { code: 'NOT_IMPLEMENTED' }
-    });
+    args: { message?: string },
+    _context: GraphQLContext
+  ): string => {
+    return args.message || 'pong';
   }
+
+  // ROADMAP: Future mutations to implement:
+  // - createAgent: Spawn new agent with initial config
+  // - updateAgent: Update agent exploration rate/behavior
+  // - resetAgent: Reset agent memory and reputation
+  // - updateAsyncRollout: Gradual rollout of async mode
+  // - triggerBenchmark: Run benchmark suite
 };
 
 // ============================================================================

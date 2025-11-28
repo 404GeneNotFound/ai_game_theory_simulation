@@ -375,28 +375,21 @@ type AgentModeDistribution {
 }
 
 # ===== Mutation Root =====
+# M1 FIX: Removed unimplemented mutations (will be added when implemented)
+# Roadmap: createAgent, updateAgent, resetAgent, updateAsyncRollout, triggerBenchmark
 
 type Mutation {
-  # Agent operations
-  "Create new agent"
-  createAgent(input: CreateAgentInput!): Agent!
-
-  "Update agent configuration"
-  updateAgent(id: ID!, input: UpdateAgentInput!): Agent!
-
-  "Reset agent state"
-  resetAgent(id: ID!): Agent!
-
-  # Platform operations
-  "Update async rollout percentage"
-  updateAsyncRollout(percent: Int!): PlatformStatus!
-
-  "Trigger platform benchmark"
-  triggerBenchmark: PlatformBenchmark!
+  # Placeholder - GraphQL requires at least one field in Mutation type
+  # This echoes the input string (useful for testing connectivity)
+  "_ping: Echo input for connectivity testing"
+  _ping(message: String = "pong"): String!
 }
 
+# Input types preserved for future implementation
+# (These will be used when mutations are implemented)
+
 """
-Input for creating new agent
+Input for creating new agent (ROADMAP: createAgent mutation)
 """
 input CreateAgentInput {
   "Agent ID"
@@ -413,7 +406,7 @@ input CreateAgentInput {
 }
 
 """
-Input for updating agent
+Input for updating agent (ROADMAP: updateAgent mutation)
 """
 input UpdateAgentInput {
   "Exploration rate [0, 1]"
