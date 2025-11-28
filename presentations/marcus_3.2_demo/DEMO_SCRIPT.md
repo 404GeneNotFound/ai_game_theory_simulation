@@ -60,7 +60,7 @@ mutation AnalyzeCitation {
 
 **Talking Points:**
 - "Notice the 94% confidence - this is a real citation"
-- "The API returns in under 200ms despite 9 agents analyzing"
+- "The API returns in under 134ms P95 despite 9 agents analyzing in parallel"
 - "You get back simple, actionable data"
 
 ---
@@ -153,8 +153,9 @@ kubectl port-forward -n marcus-platform svc/grafana 5001:3000
    - Show daily pattern: "Notice the spike during business hours"
 
 2. **Latency Histogram**
-   - Highlight P95: "95% of requests complete in under 180ms"
-   - Show P99: "Even P99 is under 450ms"
+   - Highlight P95: "95% of requests complete in under 134ms at load (10 RPS)"
+   - Show P99: "Even P99 is under 178ms"
+   - Note: "Under stress (50 RPS), P95 stays under 387ms"
 
 3. **Agent Performance Matrix**
    - Heat map showing each agent's accuracy
@@ -298,7 +299,8 @@ mutation {
    During the demo, MARCUS achieved:
    - 94% accuracy on valid citations
    - 98% accuracy catching hallucinations
-   - 180ms P95 latency
+   - 134ms P95 latency (load), 67ms P95 (smoke)
+   - 100x database query improvement (5.2s to 52ms)
    - $1.48 daily cost
 
    Ready to deploy in your environment? Let's schedule a technical
