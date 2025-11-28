@@ -123,7 +123,7 @@ export class DistributedLockManager {
 
   /**
    * Execute a Redis command, using either the pool or direct client.
-   *
+   * 
    * H1 FIX: Abstraction layer to support both connection modes.
    */
   private async executeRedisCommand<T>(
@@ -310,7 +310,7 @@ export class DistributedLockManager {
    *
    * CRITICAL: Must be called during shutdown to prevent process hang.
    * The Redis connection keeps the Node.js event loop alive.
-   *
+   * 
    * H1 FIX: Only closes connection if using direct client.
    * If using pool, the pool manages connection lifecycle.
    */

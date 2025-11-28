@@ -696,11 +696,12 @@ export class AgentStateManager {
     // H1 FIX: Use shared Redis connection pool instead of dedicated client
     this.redisPool = redisPool;
 
-    // H1 FIX (COMPLETE): DistributedLockManager now uses shared pool
-    // Eliminates duplicate Redis client - single connection pool for all components
+    // H1 FIX: DistributedLockManager now uses the shared pool
+    // This eliminates the N+1 connection problem where each state manager
+    // created its own dedicated Redis connection
     this.lockManager = new DistributedLockManager(redisPool);
 
-    console.log('✅ AgentStateManager initialized with Redis pool (lock manager uses shared pool)');
+    console.log('✅ AgentStateManager initialized with shared Redis pool');
   }
 
   /**
@@ -918,6 +919,8 @@ export class AgentStateManager {
 
   async cleanup(): Promise<void> {
     await this.db.end();
+    // H1 FIX: Close lock manager (no-op if using shared pool)
+    await this.lockManager.close();
     // H1 FIX: Don't close pool here - it's shared across components
     // Pool will be closed by global shutdown
     console.log('✅ AgentStateManager cleanup complete');
